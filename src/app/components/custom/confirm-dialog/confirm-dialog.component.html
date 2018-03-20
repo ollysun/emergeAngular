@@ -1,0 +1,15 @@
+<div>
+    <content class="md-padding">
+        {{message || 'CONFIRM_MESSAGE' | translate}}
+    </content>
+
+    <div class="dialog-actions">
+        <div class="md-padding flex">
+            <button md-button type="button" (click)="dialogRef.close(false)">{{'CANCEL' | translate}}</button>
+        </div>
+        <div class="md-padding flex">
+            <button md-raised-button type="button" color="accent" (click)="dialogRef.close(true)">{{'OK' | translate}}</button>
+        </div>
+    </div>
+
+</div>

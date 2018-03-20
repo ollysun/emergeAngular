@@ -1,0 +1,204 @@
+<!--<app-backoffice-links>
+</app-backoffice-links>-->
+
+<app-page-not-found *ngIf="!payphone" class="main-content-body">
+</app-page-not-found>
+
+<!--<div class="main-content-body" *ngIf="payphone">-->
+<div *ngIf="payphone">
+  <!--<md-card>-->
+  <md-card-subtitle class="md-card-subtitle main-content-title">
+    <div class="card-links">
+    </div>
+    <h1>{{'PAYPHONE_INFORMATION' | translate}}</h1>
+    <div class="md-padding flex">
+      <h2><b>{{'BALANCE' | translate}}</b> (<code>{{payphone.balance | currency:'AOA'}}</code>)</h2>
+    </div>
+    <div class="float-right card-link">
+      <button type="button" md-raised-button (click)="topup()">
+          <md-icon>attach_money</md-icon> {{'TOPUP' | translate}}</button>
+      <button type="button" md-raised-button (click)="setBalance()">
+          <md-icon>attach_money</md-icon> {{'SET_BALANCE' | translate}}</button>
+    </div>
+  </md-card-subtitle>
+
+  <!--<md-card-content>-->
+  <form #form="ngForm" (submit)="update()">
+    <div class="sub-form">
+      <h2 class="md-headline main-content-subtitle">{{'GENERAL' | translate}}</h2>
+      <div class="md-padding flex">
+        <label class="select-label display-block">{{'PROFILE' | translate}} ID</label>
+        <select name="payphone.profileId" [(ngModel)]="payphone.profileId" [required]="true">
+             <optgroup label="{{'PROFILE' | translate}} ID">
+              <option value="1">Default</option>
+             </optgroup>
+            </select>
+      </div>
+    </div>
+    <div class="sub-form">
+      <h2 class="md-headline main-content-subtitle">{{'PAYPHONE_CREDENTIALS' | translate}}</h2>
+      <div class="md-padding flex">
+        <inline-edit [label]="'USERNAME' | translate" [param]="payphone" [pattern]="usernameRegExp" [(ngModel)]="payphone.credentials.username" name="username" ></inline-edit>
+        <!-- <div [hidden]="form.valid || !formSubmitted || payphone.credentials.username" class="alert alert-danger">Username is required</div> -->
+      </div>
+      <div class="md-padding flex">
+        <md-input class="password-field" name="payphone.credentials.password" [(ngModel)]="payphone.credentials.password" placeholder="{{'PASSWORD' | translate}}" disabled></md-input>
+        <input class="password-generate-button" type="button" md-raised-button [value]="'GENERATE' | translate" (click)="generatePassword()" />
+        <!-- <div [hidden]="form.valid || !formSubmitted || payphone.credentials.password" class="alert alert-danger">Password is required</div> -->
+      </div>
+    </div>
+
+    <div class="sub-form">
+      <h2 class="md-headline main-content-subtitle">SIM 1</h2>
+      <div class="md-padding flex">
+        <inline-edit type="tel" min="0" [label]="'MSISDN' | translate" [(ngModel)]="payphone.sim1.msisdn" [param]="payphone" [pattern]="phoneRegExp" name="sim1_msisdn" [required]="true"></inline-edit>
+        &nbsp;&nbsp;
+        <md-radio-button #msisdn1Radio id="msisdn1Radio" name="preferredMSISDN" (click)="deselectRadioButton('msisdn2Radio')" (change)="selectPreferredMSISDN($event)" value="sim1" [disabled]="!payphone.sim1.msisdn">{{'PREFERRED_MSISDN' | translate}}</md-radio-button>
+        <!-- <div [hidden]="form.valid || !formSubmitted || payphone.sim1.msisdn" class="alert alert-danger">SIM 1 MSISDN is required</div> -->
+        <!-- <div [hidden]="!(payphone.sim1.msisdn) || (payphone.sim1.msisdn >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+      </div>
+      <br />
+      <div class="md-padding flex">
+        <inline-edit [label]="'IMSI' | translate" [(ngModel)]="payphone.sim1.imsi" name="sim1_imsi"></inline-edit>
+      </div>
+      <div class="md-padding flex">
+        <inline-edit [label]="'ICCID' | translate" [(ngModel)]="payphone.sim1.iccid" name="sim1_iccid"></inline-edit>
+      </div>
+    </div>
+    <div class="sub-form">
+      <h2 class="md-headline main-content-subtitle">SIM 2</h2>
+      <div class="md-padding flex">
+        <inline-edit type="tel" [label]="'MSISDN' | translate" [(ngModel)]="payphone.sim2.msisdn" [param]="payphone" [pattern]="phoneRegExp" name="sim2_msisdn"></inline-edit>
+        &nbsp;&nbsp;
+        <md-radio-button #msidsn2Radio id="msisdn2Radio" name="preferredMSISDN" (click)="deselectRadioButton('msisdn1Radio')" (change)="selectPreferredMSISDN($event)" value="sim2" [disabled]="!payphone.sim2.msisdn">{{'PREFERRED_MSISDN' | translate}}</md-radio-button>
+        <!-- <div [hidden]="form.valid || !formSubmitted || payphone.sim2.msisdn" class="alert alert-danger">SIM 2 MSISDN is required</div> -->
+        <!-- <div [hidden]="!(payphone.sim2.msisdn) || (payphone.sim2.msisdn >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+      </div>
+      <br />
+      <div class="md-padding flex">
+        <inline-edit [label]="'IMSI' | translate" [(ngModel)]="payphone.sim2.imsi" name="sim2_imsi"></inline-edit>
+      </div>
+      <div class="md-padding flex">
+        <inline-edit [label]="'ICCID' | translate" [(ngModel)]="payphone.sim2.iccid" name="sim2_iccid"></inline-edit>
+      </div>
+    </div>
+
+    <div class="sub-form config-holder">
+      <h2 class="md-headline main-content-subtitle">{{'CONFIGURATION_INFORMATION' | translate}}</h2>
+      <div class="md-padding flex v-top">
+        <inline-edit type="number" min="10" [label]="'KEEP_ALIVE_INTERVAL' | translate" [(ngModel)]="payphone.configData.keepAliveInterval" name="keepAliveInterval"></inline-edit>
+        <!-- <div [hidden]="!(payphone.configData.keepAliveInterval) || (payphone.configData.keepAliveInterval >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+      </div>
+
+      <div class="md-padding flex v-top">
+        <!--<inline-edit type="number" min="10" [label]="'SEND_ERRORS_TO_OCS' | translate" name="sendErrorsToOCS"></inline-edit>-->
+        <md-input placeholder="{{'SEND_ERRORS_TO_OCS' | translate}}" name="sendErrorsToOCS" [(ngModel)]="payphone.configData.sendErrorsToOCS" disabled></md-input>
+      </div>
+      <div class="md-padding flex v-top">
+        <label class="select-label bold display-block">{{'STATUS' | translate}}</label>
+
+        <p><span class="textfield">{{payphone.status.status | translate}}</span></p>
+
+        <!-- <select [(ngModel)]="payphone.status.status" name="payphone.status.status" disabled>
+           <optgroup label="{{'STATUS' | translate}}">
+             <option *ngFor="let status of statusEnum" [label]="status | translate" [value]="status">{{status | translate}}</option>
+           </optgroup>
+          </select> -->
+      </div>
+      <!--
+          <div class="md-padding float-right">
+            <button md-raised-button type="button" (click)="addCreditButton()">{{'ADD_CREDIT_BUTTON' | translate}}</button>
+          </div>-->
+      <div class="clear">&nbsp;</div>
+
+
+
+      <div *ngIf="payphone.payphoneDevice" [@fadeInOut]="showDeviceInfo" class="device-data-holder">
+        <h5 class="md-headline main-content-subtitle em-margin-top large">{{'DEVICE_INFORMATION' | translate}}</h5>
+        <div class="md-padding flex">
+          <label class="block bold">{{'ID' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.id}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'CREATION_DATE' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.creationDate}}</span>
+        </div>
+
+        <div class="md-padding flex">
+          <label class="block bold">{{'MODIFICATION_DATE' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.modificationDate}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'STATUS' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.status.status | translate}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'STATUS_DATE' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.status.statusDate}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'MAC' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.equipment.mac}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'IMEI 1' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.equipment.imei1}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'IMEI 2' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.equipment.imei2}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'SERIAL_NUMBER' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.equipment.serialNr}}</span>
+        </div>
+        <div class="md-padding flex">
+          <label class="block bold">{{'APPLICATION_VERSION' | translate}}</label>
+          <span class="textfield inline-block">
+              {{payphone.payphoneDevice.application.version.major}}.{{payphone.payphoneDevice.application.version.minor}}.{{payphone.payphoneDevice.application.version.patch}}
+              </span>
+        </div>
+        <div *ngIf="payphone.payphoneDevice.deletedReason" class="md-padding flex">
+          <label class="block bold">{{'DELETED_REASON' | translate}}</label>
+          <span class="textfield inline-block">{{payphone.payphoneDevice.deletedReason}}</span>
+        </div>
+      </div>
+
+
+
+      <!-- <div class="md-padding flex" *ngFor="let btn of payphone.configData.creditButtons; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+            <div class="md-padding flex">
+              <md-input name="{{index}}-label" [(ngModel)]="btn.label" placeholder="{{'LABEL' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="{{index}}-amount" [(ngModel)]="btn.amount" placeholder="{{'AMOUNT' | translate}}"></md-input>
+            </div>
+            <button md-raised-button type="button" (click)="removeCreditButton(index)" class="remove-credit-button" title="{{'REMOVE' | translate}}">x</button>
+          </div> -->
+    </div>
+    <div class="button-toolbar">
+
+      <!--<p *ngIf="message" class="error-message">{{message}}</p>
+          <div class="md-padding flex">
+            <button md-button type="button" color="accent" (click)="delete()">{{'DELETE' | translate}}</button>
+          </div>
+          <div class="md-padding flex float-right">
+            <button md-raised-button [disabled]="isLoading" color="accent" type="submit">{{'SAVE' | translate}}</button>
+          </div>
+          <div class="md-padding flex float-right">
+            <button md-button type="button" (click)="resetForm()">{{'CANCEL' | translate}}</button>
+          </div>-->
+      <!-- <div class="md-padding flex float-right">
+            <button md-raised-button type="button" (click)="topup()">{{'TOPUP' | translate}}</button>
+          </div>
+          <div class="md-padding flex float-right">
+            <button md-raised-button type="button" (click)="setBalance()">{{'SET_BALANCE' | translate}}</button>
+          </div> -->
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+      <app-prompt-dialog #promptDialog></app-prompt-dialog>
+
+    </div>
+  </form>
+  <!--</md-card-content>-->
+  <!--</md-card>-->
+</div>

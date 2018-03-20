@@ -1,0 +1,150 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <!-- Card Links Begin-->
+      <div class="card-links">
+        <!-- <a routerLink="/backoffice/customer/create">
+          <md-icon>add</md-icon> {{'CREATE_CUSTOMER' | translate}}
+        </a> -->
+        <a>
+          <md-icon>timeline</md-icon> {{'SERVICES' | translate}}
+        </a>
+        <a>
+          <md-icon>library_books</md-icon> {{'CONTRACTS' | translate}}
+        </a>
+        <a>
+          <md-icon>subject</md-icon> {{'INVOICES' | translate}}
+        </a>
+        <a>
+          <md-icon>payment</md-icon> {{'PAYMENTS' | translate}}
+        </a>
+        <a>
+          <md-icon>note</md-icon> {{'CREDIT_NOTES' | translate}}
+        </a>
+      </div>
+      <!-- Card Links End-->
+      <h1>{{'SEARCH' | translate}} {{'CUSTOMERS' | translate}}</h1>
+      <a routerLink="/backoffice/customer/create" class="float-right card-link">
+        <md-icon>add</md-icon>{{'CREATE_CUSTOMER' | translate}}</a>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row" (submit)="search()">
+        <div class="row" *ngIf="toggleOptions.show">
+          <div class="sub-form width-45">
+            <h2 class="md-headline main-content-subtitle">{{'SYSTEM_INFORMATION' | translate}}</h2>
+            <div class="md-padding flex">
+              <md-input type="number" min="1" [(ngModel)]="query.customer_id" name="query.customer_id" placeholder="{{'CUSTOMER' | translate}} ID"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]="query.username" disabled name="query.username" [placeholder]="'USERNAME' | translate"></md-input>
+            </div>
+            <br>
+            <div class="md-padding flex full-width">
+              <rl-tag-input class="position-relative" [(ngModel)]="tags" name="tags" placeholder="{{'TAGS' | translate}}"></rl-tag-input>
+            </div>
+            <div class="md-padding flex">
+              <label class="select-label display-block">{{'STATUS' | translate}}</label>
+              <select name="query.status" [(ngModel)]="query.status">
+    						<optgroup [label]="'STATUS' | translate">
+    							<option *ngFor="let status of statusEnum" [label]="status" [value]="status" [label]="status | translate">{{status | translate}}</option>
+    						</optgroup>
+    					</select>
+            </div>
+          </div>
+          <div class="sub-form">
+            <h2 class="md-headline main-content-subtitle">{{'PERSONAL_INFORMATION' | translate}}</h2>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]="query.name" name="query.name" placeholder="{{'NAME' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input disabled [(ngModel)]="query.phonenumber" name="query.phonenumber" placeholder="{{'TELEPHONE_NUMBER' | translate}}"></md-input>
+            </div>
+            <br>
+            <div class="md-padding flex">
+              <md-input disabled [(ngModel)]="query.email" name="query.email" placeholder="{{'EMAIL' | translate}}" type="email"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]="query.fiscal_number" name="query.fiscal_number" [placeholder]="'FISCAL_NUMBER' | translate"></md-input>
+            </div>
+          </div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div class="row">
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <md-card-actions class="align right md-padding">
+          <app-toggle class="flex float-left" [(toggle)]="toggleOptions"></app-toggle>
+          <button type="button" md-button (click)="clear()">{{'CANCEL' | translate}}</button>
+          <button md-button class="em-primary-btn" [disabled]="isLoading">
+            {{'SEARCH' | translate}}
+          </button>
+        </md-card-actions>
+        <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+      </form>
+
+      <hr>
+      <div class="clear md-margin">&nbsp;</div>
+      <md-spinner class="em-spinner text-center" color="accent" *ngIf="isLoading"></md-spinner>
+      <div class="no-results" *ngIf="!isLoading && searchResult.data.length === 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <div *ngIf="!isLoading && searchResult.data.length > 0">
+        <a #anchorTag></a>
+        <div class="align right export-link">{{'EXPORT' | translate}}: <a (click)="exportCSV($event)" md-tooltip="CSV">CSV</a></div>
+        <table class="search-results" border='1'>
+          <thead>
+            <tr>
+              <th><md-checkbox (change)="selectCustomers($event)"></md-checkbox></th>
+              <th>ID</th>
+              <th>{{'STATUS' | translate}}</th>
+              <th>{{'CREATION_DATE' | translate}}</th>
+              <th>{{'NAME' | translate}}</th>
+              <th>{{'FISCAL_NUMBER' | translate}}</th>
+              <th>{{'TELEPHONE_NUMBER' | translate}}</th>
+              <th>{{'EMAIL' | translate}}</th>
+              <th>{{'TAGS' | translate }}</th>
+              <th>{{'PROVISION_EQUIPMENT' | translate }}</th>
+              <th>{{'ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of searchResult.data; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+              <td><md-checkbox [(ngModel)]="customer.$checked"></md-checkbox></td>
+              <td>{{customer.id}}</td>
+              <td><span class='em-status-text'>{{customer.status | translate}}</span></td>
+              <td>{{customer.dbCdate}}</td>
+              <td>{{customer.name}}</td>
+              <td>{{customer.fiscalNumber}}</td>
+              <td>{{customer.phoneNumber}}</td>
+              <td>{{customer.email}}</td>
+              <td>
+                <div class="em-tags" *ngFor="let tag of customer.tags">
+                  {{tag}}
+                </div>
+              </td>
+              <td>
+                <a *ngFor="let contract of customer.contractPrepaids" routerLink="/backoffice/customers/{{customer.id}}/prepaid-services/{{contract.servicePrepaid}}">
+                  <div class="em-tags">
+                    {{contract.serviceType}}
+                  </div>
+                </a>
+              </td>
+              <td>
+                <a routerLink="/backoffice/customers/{{customer.id}}" [md-tooltip]="'VIEW' | translate">
+                  <md-icon>remove_red_eye</md-icon>
+                </a>
+                <a (click)="delete(customer.id, index)" [md-tooltip]="'DELETE' | translate">
+                  <md-icon>delete</md-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

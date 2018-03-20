@@ -1,0 +1,4 @@
+<button type="button" md-button class="toggle-button" (click)="toggleControl()">
+  <md-icon>{{toggle.show ? 'expand_less' : 'expand_more'}}</md-icon>
+  {{(toggle.show ? 'HIDE': 'SHOW') | translate}}
+</button>

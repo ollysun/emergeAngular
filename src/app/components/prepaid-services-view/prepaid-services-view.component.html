@@ -1,0 +1,73 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <app-page-not-found *ngIf="!prepaid">
+  </app-page-not-found>
+  <md-card *ngIf="prepaid">
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'EDIT_PREPAID_SERVICE' | translate }}</h1>
+      <div class="md-padding flex float-right">
+       <a *ngIf="customerId != 0" routerLink="/backoffice/customers/{{customerId}}/prepaid-services/{{prepaid.servicePrepaidId}}/payment">
+         <button type="button" md-button class="em-primary-btn">{{'CREDIT_AGENT' | translate}}</button>
+       </a>
+      </div>
+      <div class="md-padding flex" *ngIf="prepaid.serviceType==='TELOAGENT' && prepaid.status === 'ACTIVE'">
+        <h2><b>{{'BALANCE' | translate}}</b> (<code>{{prepaid.balance | currency:'AOA'}}</code>)</h2>
+      </div>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row" (submit)="update()">
+        <div>
+          <div class="md-padding flex flex-44">
+            <inline-edit [label]="'PREPAID_NAME' | translate" [(ngModel)]="prepaid.name" name="prepaid.name" classNames="textfield inline-block"></inline-edit>
+          </div>
+          <div class="md-padding flex flex-44" *ngIf="prepaid.serviceType != 'TELOAGENT' && !(prepaid.serviceType === 'TELOOPERATOR' && !prepaid.isLegacy)">
+            <inline-edit [label]="'EXTERNAL_PROVISION_ID' | translate" [(ngModel)]="prepaid.externalProvisionId" name="prepaid.externalProvisionId" classNames="textfield inline-block"></inline-edit>
+          </div>
+          <div class="md-padding flex flex-44">
+            <label class="select-label display-block bold">{{'STATUS' | translate}}</label><br />
+            <span>{{prepaid.status | translate}}</span>
+          </div>
+          <div class="md-padding flex flex-44">
+            <label class="select-label display-block bold">{{'DELETED_REASON' | translate}}</label><br />
+            <span>{{prepaid.deletedReason}}</span>
+          </div>
+          <br>
+          <div class="md-padding flex flex-44">
+            <label class="select-label display-block bold">{{'SERVICE_TYPE' | translate}}</label><br />
+            <span>{{prepaid.serviceType}}</span>
+          </div>
+          <div class="md-padding flex flex-44">
+            <label class="select-label display-block bold">{{'PRODUCT'| translate }}</label><br>
+            <select class="form-control" disabled [(ngModel)]="prepaid.productId" name="prepaid.productId">
+              <option *ngFor="let product of products" value={{product.id}}>{{product.text}}</option>
+            </select>
+          </div>
+
+          <div class="em-margin-top large" *ngIf="prepaid.payphoneService">
+            <app-payphone #payphoneComponent [payphone]="prepaid.payphoneService"></app-payphone>
+          </div>
+
+          <div class="button-toolbar em-margin-top large">
+            <div class="md-padding flex">
+              <button [disabled]="prepaid.status === 'ACTIVE'" md-button type="button" color="warn" (click)="delete(prepaid)" class="align left">{{'DELETE' | translate}}</button>
+            </div>
+            <div class="md-padding flex" *ngIf="prepaid.serviceType==='TELOAGENT' && prepaid.status === 'ACTIVE'">
+              <button md-raised-button type="button" (click)="topUpDialog()" class="em-primary-btn">{{'TOP_UP_TELO_AGENT' | translate }}</button>
+            </div>
+            <div class="md-padding flex float-right">
+              <button type="submit" [disabled]="isLoading || (prepaid.payphoneService && prepaid.payphoneService.$error)" class="em-primary-btn" md-button>
+                <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+                {{'UPDATE_PREPAID' | translate}}
+              </button>
+            </div>
+            <div class="md-padding flex float-right">
+              <button md-button type="button" [disabled]="isLoading" (click)="cancel()">{{'CANCEL' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <app-prompt-dialog #promptDialog></app-prompt-dialog>
+      <app-ta-topup-dialog #taTopUpDialog></app-ta-topup-dialog>
+    </md-card-content>
+  </md-card>
+</div>

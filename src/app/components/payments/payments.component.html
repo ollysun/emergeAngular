@@ -1,0 +1,36 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <!-- Card Links Begin-->
+      <div class="card-links">
+        <a routerLink="/backoffice/payment/upload-statement">
+          <md-icon>cloud_upload</md-icon> {{'UPLOAD_BANK_STATEMENT' | translate}}
+        </a>
+      </div>
+      <!-- Card Links End-->
+      <h1>{{'PAYMENT_MANAGEMENT' | translate}}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <div class="sub-form">
+        <md-input [placeholder]="'PAYMENTS' | translate"></md-input>
+
+        <div class="md-padding flex flex-55">
+          <label class="select-label display-block">{{'BANK_NAME' | translate}}</label>
+          <select>
+            <optgroup [label]="'BANKNAME' | translate">
+              <option *ngFor="let bankName of bankEnum" [label]="bankName" [value]="bankName" [label]="bankName">
+                {{bankName | translate}}</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <md-card-actions class="md-padding align right">
+        <button type="button" md-button>{{'CANCEL' | translate}}</button>
+        <button type="button" md-button class="em-primary-btn">{{'SEARCH' | translate}}</button>
+      </md-card-actions>
+    </md-card-content>
+  </md-card>
+</div>

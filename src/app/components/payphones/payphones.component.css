@@ -1,0 +1,21 @@
+.search-results-navigator-box
+{
+  padding:10px;
+  border:1px solid #ccc;
+  width:40px;
+  height:40px;
+  border-radius:20%;
+}
+.search-results-navigator
+{
+    font-size: 30px;
+    color: #aaa;
+    font-weight: bold;
+    position:relative;
+    top:4px;
+}
+
+.search-results-navigator-box, .search-results-navigator{ cursor:pointer; }
+
+select { border-color:#999; margin-right:+10px; }
+label { color:#999; }

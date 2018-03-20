@@ -1,0 +1,32 @@
+<!-- <div class="text-centered main-content-sidebar">
+  <md-card class="quick-link-content">
+    <div>
+      <md-toolbar color="primary">{{'QUICK_LINKS' | translate}}</md-toolbar>
+      <a routerLink="/backoffice/customers" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'CUSTOMER_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/tariffs" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'TARIFF_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/groups" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'GROUP_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/modulations" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'MODULATION_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/special-days" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'SPECIAL_DAYS_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/payphones" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'PAYPHONE_MANAGEMENT' | translate}}</button></a>
+      <a routerLink="/backoffice/service/prepaid" [routerLinkActive]="['active-sidebar-link']"><button md-button class="quick-link">{{'PREPAID_SERVICES' | translate}}</button></a>
+    </div>
+  </md-card>
+</div> -->
+<div class="text-centered main-content-sidebar">
+  <md-card class="quick-link-content">
+    <!-- <md-toolbar>{{'QUICK_LINKS' | translate}}</md-toolbar> -->
+    <md-card-subtitle _ngcontent-vte-8="" class="md-card-subtitle main-content-title em-quicklink-title">
+      <h1 _ngcontent-vte-8="">{{'QUICK_LINKS' | translate}}</h1>
+      <!-- <div _ngcontent-vte-8="" class="bottom-line"></div> -->
+    </md-card-subtitle>
+    <div>
+      <a class="quick-link" routerLinkActive="active">{{'USER_MANAGEMENT' | translate}}</a>
+      <a routerLink="/backoffice/customers" class="quick-link" routerLinkActive="active">{{'CUSTOMER_MANAGEMENT' | translate}}</a>
+      <a class="quick-link" routerLink="/backoffice/prepaid-services" routerLinkActive="active">{{'PRODUCT_AND_SERVICE_MANAGEMENT' | translate}}</a>
+      <a class="quick-link" routerLink="/backoffice/contract-templates" routerLinkActive="active">{{'CONTRACT_MANAGEMENT' | translate}}</a>
+      <a class="quick-link" routerLink="/backoffice/payments" routerLinkActive="active">{{'PAYMENT_MANAGEMENT' | translate}}</a>
+      <a class="quick-link" routerLink="/backoffice/tariffs" routerLinkActive="active">{{'TARIFF_MANAGEMENT' | translate}}</a>
+      <a class="quick-link" routerLinkActive="active">{{'REPORTING' | translate}}</a>
+    </div>
+  </md-card>
+</div>

@@ -1,0 +1,71 @@
+<md-card class="float-left text-centered main-content-sidebar">
+ <legend>{{'QUICK_LINKS' | translate}}</legend>
+ <div><a routerLink="/backoffice/customers"><button md-raised-button>{{'CUSTOMER_MANAGEMENT' | translate}}</button></a></div>
+ <div><button md-raised-button>{{'PRODUCT_MANAGEMENT' | translate}}</button></div>
+ <div><button md-raised-button>{{'USER_MANAGEMENT' | translate}}</button></div>
+ <div><button md-raised-button>{{'BUSINESS_MONITORING' | translate}}</button></div>
+ <div><button md-raised-button>{{'OPERATIONAL_MONITORING' | translate}}</button></div>
+ <div><a routerLink="/backoffice/payphones"><button md-raised-button>{{'PAYPHONES' | translate}}</button></a></div>
+ <div><button md-raised-button>{{'EQUIPMENTS' | translate}}</button></div>
+ <div><button md-raised-button>{{'CONTRACTS' | translate}}</button></div>
+</md-card>
+
+<div class="float-left main-content-body">
+  <md-card>
+   <md-card-subtitle class="md-card-subtitle"><h1 class="main-content-title"><span class="md-headline">{{'PAYPHONE_DATA' | translate}}</span></h1></md-card-subtitle>
+    <md-card-content>
+      <form (submit)="submit()">
+        <div class="md-padding flex">
+         <div class="md-padding flex">
+           <label class="block bold">{{'PAYPHONE' | translate}}ID</label>
+           <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.id}}</span>
+         </div>
+         <div class="md-padding flex">
+          <inline-edit [label]="'USERNAME' | translate" [(ngModel)]="payphone.username"  name="payphone.username" (onSave)="saveEditable($event)"></inline-edit>
+         </div>
+         <div class="md-padding flex">
+          <label class="block bold">{{'PASSWORD' | translate}}</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.password}}</span>
+         </div>
+        </div>
+        <div class="md-padding flext">
+         <div class="md-padding flex">
+          <label class="block bold">{{'SERIAL_NUMBER' | translate}}</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.serialNumber}}</span>
+         </div>
+         <div class="md-padding flex">
+          <label class="block bold">{{'IMEI' | translate}}</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.IMEI}}</span>
+         </div>
+         <div class="md-padding flex">
+          <label class="block bold">{{'ICCID' | translate}}</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.ICCID}}</span>
+         </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="md-padding flex">
+         <div class="md-padding flex">
+          <label class="block bold">MAC</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.MAC}}</span>
+         </div>
+         <div class="md-padding flex">
+          <label class="block bold">{{'CLIENT' | translate}} ID</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.clientID}}</span>
+         </div>
+         <div class="md-padding flex">
+          <label class="block bold">{{'CONTRACT' | translate}} ID</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.contractID}}</span>
+         </div>
+        </div>
+        <div class="md-padding flex">
+         <div class="md-padding flex">
+          <label class="block bold">{{'IMSI' | translate}}</label>
+          <span contenteditable class="textfield inline-block" title="Click to edit">{{payphone.IMSI}}</span>
+         </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <button md-button>Update</button>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

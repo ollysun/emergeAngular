@@ -1,0 +1,71 @@
+<execution>
+  <id>install node and npm</id>
+  <phase>generate-resources</phase>
+  <goals>
+    <goal>install-node-and-npm</goal>
+  </goals>
+  <configuration>
+    <nodeVersion>v6.2.1</nodeVersion>
+    <npmVersion>3.9.3</npmVersion>
+  </configuration>
+</execution>
+<execution>
+  <id>npm install production</id>
+  <phase>generate-resources</phase>
+  <goals>
+    <goal>npm</goal>
+  </goals>
+  <configuration>
+    <arguments>install --only=prod</arguments>
+  </configuration>
+</execution>
+<execution>
+  <id>npm install development</id>
+  <phase>generate-resources</phase>
+  <goals>
+    <goal>npm</goal>
+  </goals>
+  <configuration>
+    <arguments>install --only=dev</arguments>
+  </configuration>
+</execution>
+<execution>
+  <id>npm install angular-cli</id>
+  <phase>generate-resources</phase>
+  <goals>
+    <goal>npm</goal>
+  </goals>
+  <configuration>
+    <arguments>install angular-cli -g</arguments>
+  </configuration>
+</execution>
+<execution>
+  <id>npm test</id>
+  <phase>frontend-test</phase>
+  <goals>
+    <goal>npm</goal>
+  </goals>
+  <configuration>
+    <arguments>test --verbose</arguments>
+  </configuration>
+</execution>
+<execution>
+  <id>build application</id>
+  <phase>build-angular2-app</phase>
+  <goals>
+    <goal>ng</goal>
+  </goals>
+  <configuration>
+    <arguments>build --prod --env=prod</arguments>
+  </configuration>
+</execution>
+<execution>
+  <id>npm start</id>
+  <phase>run-node-server</phase>
+  <goals>
+    <goal>npm</goal>
+  </goals>
+  <configuration>
+    <arguments>start</arguments>
+  </configuration>
+</execution>

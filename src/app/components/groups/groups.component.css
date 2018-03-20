@@ -1,0 +1,9 @@
+table { width:100%; border:1px solid #eee; }
+select { width:160px; padding:2px; border:1px solid #aaa; }
+md-slide-toggle { margin:0 !important; height:20px !important; line-height:20px !important; }
+md-input, select { width:170px; }
+md-checkbox-frame, md-checkbox-background { border-color: #aaa !important; }
+button.adjusted { position:relative; left: 80px; }
+
+.md-padding-adjusted { width: 390px; max-width:390px; }
+.checkbox-div { width:160px; margin-right:12px; }

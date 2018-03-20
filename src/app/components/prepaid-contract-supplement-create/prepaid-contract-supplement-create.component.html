@@ -1,0 +1,43 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'CREATE_SUPPLEMENT_CONTRACT' | translate}}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <div>
+        <form class="row" (submit)="update()">
+          <div class="sub-form">
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.serviceType" ng2-auto-complete [source]="prepaidData" [(ngModel)]="service" [placeholder]="'SELECT_SERVICE_TYPE' | translate" value-property-name="servicePrepaidId" display-property-name="serviceType" required>
+              </md-input>
+            </div>
+
+            <md-spinner class="em-spinner small flex" color="accent" *ngIf="isLoading"></md-spinner>
+          </div>
+          <div class="sub-form">
+            <md-slide-toggle [(ngModel)]="prepaidContract.automaticRenewal" name="prepaidContract.automaticRenewal">
+              {{'AUTOMATIC_RENEWAL' | translate}}</md-slide-toggle>
+          </div>
+          <div class="md-padding">
+            <label class="block">{{'CONTENT' | translate}}</label>
+            <br>
+            <rich-text-field class="full-width height-400" elementId="rich-editor" (onEditorKeyup)="keyupHandlerFunction($event)">
+            </rich-text-field>
+          </div>
+          <br>
+          <div class="md-padding button-toolbar em-margin-top large">
+            <button md-button type="button" [disabled]="isLoading" (click)="cancel()">{{'CANCEL' | translate}}</button>
+            <div class="flex float-right">
+              <button md-button type="button" (click)="clear()">{{'CLEAR' | translate}}</button>
+              <button md-button class="em-primary-btn" [disabled]="isLoading || !service.serviceType || !service || !prepaidContract.content" type="submit">
+                <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+                {{'SAVE' | translate}}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

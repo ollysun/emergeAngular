@@ -1,0 +1,20 @@
+<div>
+    <content class="md-padding">
+        <span *ngIf="message">{{message | uppercase | translate}}</span>
+        <span *ngIf="!message">{{'PROMPT_MESSAGE' | translate}}</span>
+    </content>
+
+    <div class="dialog-actions">
+        <div class="md-padding flex">
+         <md-input name="promptValue" [(ngModel)]="suppliedValue"></md-input>
+        </div>
+        <br />
+        <div class="md-padding flex">
+            <button md-button type="button" (click)="dialogRef.close(false)">{{'CANCEL' | translate}}</button>
+        </div>
+        <div class="md-padding flex">
+            <button md-raised-button type="button" color="accent" (click)="dialogRef.close(suppliedValue)">{{'OK' | translate}}</button>
+        </div>
+    </div>
+
+</div>

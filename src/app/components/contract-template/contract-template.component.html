@@ -1,0 +1,58 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'EDIT_CONTRACT_TEMPLATE' | translate }}  #{{contractTemplate.contractTemplateId}}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <form (submit)="update()">
+        <div class="row">
+          <div>
+            <div class="md-padding flex flex-33">
+              <inline-edit [required]="true" [label]="'NAME' | translate" [(ngModel)]='contractTemplate.name' name="contractTemplate.name" classNames="textfield inline-block"></inline-edit>
+            </div>
+
+            <div class="md-padding flex flex-33">
+              <inline-edit [required]="true" [label]="'CREATED_BY' | translate" [(ngModel)]='contractTemplate.createdBy' name="contractTemplate.createdBy" classNames="textfield inline-block" [disabled]="true">
+              </inline-edit>
+            </div>
+            <div class="md-padding flex flex-22">
+              <inline-edit [required]="true" type="select" [items]="contractTypeEnum" [label]="'CONTRACT_TYPE' | translate" [(ngModel)]="contractTemplate.contractType"  name="contractTemplate.contractType" classNames="textfield inline-block" itemIdKey="id" itemLabelKey="label">
+              </inline-edit>
+
+              <!-- <label class="select-label display-block">{{'CONTRACT_TYPE'| translate }}</label>
+              <select class="flex-22" name="contractTemplate.contractType" [(ngModel)]="contractTemplate.contractType">
+                  <optgroup [label]="'CONTRACT_TYPE' | translate">
+                    <option *ngFor="let contractType of contractTypeEnum" [label]="contractType" [value]="contractType"
+                    [label]="contractType | translate">{{contractType | translate}}</option>
+                  </optgroup>
+                </select> -->
+            </div>
+          </div>
+          <div class="md-padding">
+            <inline-edit [required]="true" type="textarea" [required]="true" minlength="5" class="full-width" name="contractTemplate.description" [(ngModel)]='contractTemplate.description' [label]="'DESCRIPTION' | translate">
+            </inline-edit>
+          </div>
+          <div class="md-padding">
+            <label class="bold block">{{'CONTENT' | translate}}</label>
+            <br>
+            <rich-text-field *ngIf="contractTemplate.content" class="full-width height-400" [content]="contractTemplate.content" elementId="rich-editor" (onEditorKeyup)="keyupHandlerFunction($event)">
+            </rich-text-field>
+          </div>
+        </div>
+        <div class="md-padding button-toolbar em-margin-top large">
+          <div class="flex">
+            <button md-button [disabled]="isLoading" type="button" color="warn" (click)="delete()" class="align left">{{'DELETE' | translate}}</button>
+          </div>
+          <div class="flex float-right">
+            <button md-button type="button" [disabled]="isLoading" (click)="cancel()">{{'CANCEL' | translate}}</button>
+            <button md-button class="em-primary-btn" [disabled]="isLoading || hasError()" type="submit">
+              <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+              {{'UPDATE' | translate}}</button>
+          </div>
+        </div>
+        <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

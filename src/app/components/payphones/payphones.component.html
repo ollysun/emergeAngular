@@ -1,0 +1,105 @@
+<!--<app-backoffice-links>
+</app-backoffice-links>-->
+
+<!--<div class="main-content-body">-->
+	<!--<md-card>-->
+		<!-- <md-card-subtitle class="md-card-subtitle main-content-title">
+			<h1>{{'SEARCH' | translate}} {{'PAYPHONES' | translate}}</h1>
+			<a routerLink="/backoffice/payphone/create" class="card-link">
+				<md-icon>add circle</md-icon> {{'CREATE_PAYPHONE_SERVICE' | translate}}
+			</a>
+			<a routerLink="/backoffice/service/prepaid/create" md-button class="float-right card-link">
+				<md-icon>add</md-icon> {{'CREATE_PREPAID_SERVICE' | translate}}
+			</a>
+		</md-card-subtitle> -->
+		<!--<md-card-content>-->
+			<form class="row md-margin" (submit)="search()">
+				<div class="md-padding flex">
+					<md-input name="query.username" [(ngModel)]="query.username" placeholder="{{'USERNAME' | translate}}"></md-input>
+				</div>
+				<div class="md-padding flex">
+					<md-input name="query.msisdn" [(ngModel)]="query.msisdn" placeholder="{{'MSISDN' | translate}}"></md-input>
+				</div>
+				<div class="md-padding flex">
+					<md-input name="query.iccid" [(ngModel)]="query.iccid" placeholder="{{'ICCID' | translate}}"></md-input>
+				</div>
+				<div class="md-padding flex">
+					<md-input name="query.imsi" [(ngModel)]="query.imsi" placeholder="{{'IMSI' | translate}}"></md-input>
+				</div>
+				<div class="md-padding flex">
+					<label class="select-label display-block">{{'PROFILE_ID' | translate}}</label>
+					<select name="query.profileId" [(ngModel)]="query.profileId">
+						<option value="1">Default</option>
+					</select>
+				</div>
+				<div class="md-padding flex">
+					<label class="select-label display-block">{{'STATUS' | translate}}</label>
+					<select name="query.status" [(ngModel)]="query.status">
+						<optgroup [label]="'STATUS' | translate">
+							<option *ngFor="let status of statusEnum" [label]="status | translate" [value]="status">{{status | translate}}</option>
+						</optgroup>
+					</select>
+				</div>
+				<md-card-actions class="align right md-margin">
+					<button type="button" md-button (click)="clear()">{{'CLEAR' | translate}}</button>
+					<button type="submit" [disabled]="isLoading" class="em-primary-btn" md-button>{{'SEARCH' | translate}}</button>
+					<app-confirm-dialog #confirmDialog></app-confirm-dialog>
+				</md-card-actions>
+			</form>
+
+			<div *ngIf="searchActive">
+				<hr />
+
+				<div class="clear" style="margin-top:30px; margin-bottom:5px;"></div>
+				<md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+				<div *ngIf="!isLoading && searchResult.data.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+				<!-- <div class="align right">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a></div> -->
+
+				<table *ngIf="!isLoading && searchResult.data.length > 0" class="search-results">
+					<thead>
+						<tr>
+							<th>{{'PAYPHONE_ID' | translate}}</th>
+							<th>{{'USERNAME' | translate}}</th>
+							<th>{{'IMEI' | translate}}</th>
+							<th>{{'ICCID' | translate }}</th>
+							<th>{{'IMSI' | translate}}</th>
+							<th>{{'MSISDN' | translate}}</th>
+							<th>{{'CREATION_DATE' | translate}}</th>
+							<th>{{'ACTIONS' | translate}}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let payphoneService of searchResult.data; let index=index; let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
+							<td>{{payphoneService.id}}</td>
+							<td>{{payphoneService.credentials.username}}</td>
+							<td>{{payphoneService.imei}}</td>
+							<td>{{payphoneService.sim1.iccid}}</td>
+							<td>{{payphoneService.sim1.imsi}}</td>
+							<td>{{payphoneService.sim1.msisdn}}</td>
+							<td>{{payphoneService.creationDate | date}}</td>
+							<td>
+								<!--<a routerLink="/backoffice/payphones/{{payphoneService.id}}">
+									<md-icon title="{{'VIEW' | translate}}">remove_red_eye</md-icon>
+								</a>-->
+								<a (click)="disable(payphoneService)">
+									<md-icon title="{{'DISABLE' | translate}}">disable</md-icon>
+									disable
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div *ngIf="paginate">
+					<span class="search-results-navigator-box" title="First" (click)="first()"><span class="inline-block search-results-navigator">&laquo;</span></span>
+					<span class="search-results-navigator-box" title="Previous" (click)="previous()"><span class="inline-block search-results-navigator">&lsaquo;</span></span>
+					&nbsp;
+					<span class="search-results-navigator-box" title="Next" (click)="next()"><span class="inline-block search-results-navigator">&rsaquo;</span></span>
+					<span class="search-results-navigator-box" title="Last" (click)="last()"><span class="inline-block search-results-navigator">&raquo;</span></span>
+				</div>
+			</div>
+
+			<div class="clear">&nbsp;</div>
+		<!--</md-card-content>-->
+	<!--</md-card>-->
+<!--</div>-->

@@ -1,0 +1,184 @@
+<app-backoffice-links></app-backoffice-links>
+<app-page-not-found *ngIf="!customer" class="main-content-body"></app-page-not-found>
+<div class="main-content-body" *ngIf="customer">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <!-- Card Links Begin-->
+      <div class="card-links">
+        <a>
+          <md-icon>timeline</md-icon> {{'SERVICES' | translate}}
+        </a>
+        <a routerLink="/backoffice/customers/{{customer.id}}/prepaid-contract/create">
+          <md-icon>library_books</md-icon> {{'CONTRACTS' | translate}}
+        </a>
+        <a>
+          <md-icon>subject</md-icon> {{'INVOICES' | translate}}
+        </a>
+        <a>
+          <md-icon>payment</md-icon> {{'PAYMENTS' | translate}}
+        </a>
+        <a>
+          <md-icon>note</md-icon> {{'CREDIT_NOTES' | translate}}
+        </a>
+      </div>
+      <!-- Card Links End-->
+      <h1>{{'CUSTOMER' | translate}} #{{ customer.id }}</h1>
+      <span class="block bold">{{customer.name}}</span>
+      <span class="em-status">({{customer.status | translate}})</span>
+    </md-card-subtitle>
+    <md-card-content>
+      <form (submit)="update()">
+        <div class="row">
+          <div class="sub-form">
+            <div class="md-padding flex-88">
+              <inline-edit [label]="'CUSTOMER_NAME' | translate" [(ngModel)]="customer.name" name="customer.name" classNames="textfield inline-block"></inline-edit>
+            </div>
+            <div class="md-padding flex-88">
+              <label class="customer-data-label">{{'TAGS' | translate}}</label>
+              <rl-tag-input class="" [(ngModel)]="tags" name="tags" placeholder="" [md-tooltip]="'CLICK_EDIT' | translate"></rl-tag-input>
+            </div>
+          </div>
+          <div class="sub-form">
+            <!-- <h2 class="md-headline main-content-subtitle">{{'FISCAL_INFORMATION' | translate}}</h2> -->
+            <div class="md-padding flex-88">
+              <inline-edit [param]="customer" [pattern]="fiscalNumberRegExp" [label]="'FISCAL_NUMBER' | translate" [(ngModel)]="customer.fiscalNumber" name="customer.fiscalNumber" classNames="textfield inline-block"></inline-edit>
+            </div>
+            <div class="md-padding flex-88">
+              <label class="customer-data-label">{{'TAX_EXCEPTION_CERTIFICATES' | translate}}</label>
+              <rl-tag-input class="" [(ngModel)]="taxExemptionCertificates" name="taxExemptionCertificates" placeholder="" [md-tooltip]="'CLICK_EDIT' | translate"></rl-tag-input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h2 class="md-headline main-content-subtitle">{{'PERSONAL_INFORMATION' | translate}}</h2>
+          <div class="sub-form">
+            <div class="md-padding flex flex-88">
+              <div class="flex flex-88">
+                <inline-edit type="url" [label]="'WEBSITE' | translate" [(ngModel)]="customer.website" name="customer.website" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="flex flex-11 v-bottom">
+                <a [href]="customer.website" *ngIf="customer.website" target="_blank">
+                  <md-icon>public</md-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="sub-form">
+            <div class="md-padding flex flex-88">
+              <label class="customer-data-label bold">{{'COUNTRY' | translate}}</label>
+              <p><span class="textfield inline-block">{{countries[customer.country]}}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="sub-form full-width">
+              <h2 class="md-headline main-content-subtitle">{{'NOTES' | translate}}</h2>
+              <div class="md-padding flex flex-55">
+                <inline-edit [label]="'PUBLIC_NOTES' | translate" [(ngModel)]="customer.publicNotes" name="customer.publicNotes" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="md-padding flex flex-55">
+                <inline-edit [label]="'PRIVATE_NOTES' | translate" [(ngModel)]="customer.privateNotes" name="customer.privateNotes" classNames="textfield inline-block"></inline-edit>
+              </div>
+            </div>
+          </div> -->
+
+        <div class="row">
+          <h2 class="md-headline main-content-subtitle">{{'NOTES' | translate}}</h2>
+          <div class="sub-form">
+            <div class="md-padding flex flex-88">
+              <md-textarea [(ngModel)]="customer.publicNotes" name="customer.publicNotes" class="full-width" [placeholder]="'PUBLIC_NOTES' | translate"></md-textarea>
+            </div>
+          </div>
+          <div class="sub-form">
+            <div class="md-padding flex flex-88">
+              <md-textarea [(ngModel)]="customer.privateNotes" name="customer.privateNotes" class="full-width" [placeholder]="'PRIVATE_NOTES' | translate"></md-textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="sub-form full-width" *ngFor="let address of customer.customerAddresses; let addressIndex=index;">
+          <div class="row">
+            <div class="sub-form full-width">
+              <h4 class="md-headline main-content-subtitle">{{ addressIndex + 1 }}. {{'CUSTOMER_ADDRESSES' | translate}}</h4>
+              <div class="float-right v-middle">
+                <button type="button" md-icon-button color="warn" [md-tooltip]="'DELETE' | translate" *ngIf="addressIndex > 0" (click)="removeAddress(address.id, addressIndex, $event)"><md-icon>delete</md-icon></button>
+                <!-- <button class="em-primary-btn" type="button" color="accent" [disabled]="validateAddress(address)" (click)="saveAddress(customer.id, address, $event)" md-icon-button [md-tooltip]="'SAVE_ADDRESS' | translate"><md-icon>check</md-icon></button> -->
+              </div>
+              <div class="md-padding flex flex-55">
+                <inline-edit [required]="true" [label]="'ADDRESS_NAME' | translate" [(ngModel)]="address.addressName" name="address.addressName.{{addressIndex}}" classNames="textfield inline-block">{{'ADDRESS_NAME' | translate}}</inline-edit>
+              </div>
+              <div class="md-padding flex flex-55">
+                <inline-edit [label]="'ADDRESS' | translate" [(ngModel)]="address.address" name="address.address.{{addressIndex}}" classNames="textfield inline-block">{{'ADDRESS' | translate}}</inline-edit>
+              </div>
+              <div class="md-padding flex flex-44">
+                <inline-edit type="tel" [param]="address" [pattern]="phoneRegExp" [label]="'FAX_NUMBER' | translate" [(ngModel)]="address.faxNumber" name="address.faxNumber.{{addressIndex}}" classNames="textfield inline-block">{{'FAX_NUMBER' | translate}}</inline-edit>
+              </div>
+              <div class="md-padding flex">
+                <inline-edit type="tel" [required]="true" [param]="address" [pattern]="phoneRegExp" [label]="'TELEPHONE_NUMBER' | translate" [(ngModel)]="address.telephoneNumber" name="address.telephoneNumber.{{addressIndex}}" classNames="textfield inline-block">{{'TELEPHONE_NUMBER' | translate}}</inline-edit>
+              </div>
+              <div class="md-padding flex flex-55">
+                <inline-edit [param]="address" [pattern]="emailRegExp" type="email" [label]="'EMAIL' | translate" [(ngModel)]="address.email" name="address.email.{{addressIndex}}" classNames="textfield inline-block">{{'EMAIL' | translate}}</inline-edit>
+              </div>
+            </div>
+
+            <div class="sub-form full-width" *ngFor="let contact of address.contacts; let contactIndex=index;">
+              <h5 class="md-headline main-content-subtitle">{{(addressIndex+1) + '.' + (contactIndex+1) }}. {{'CONTACT' | translate}}</h5>
+              <div class="float-right v-middle">
+                <button type="button" md-icon-button color="warn" [md-tooltip]="'DELETE' | translate" (click)="removeContact(contactIndex, contact.id, address, $event)"><md-icon>delete</md-icon></button>
+                <!-- <button [disabled]="validateContact(contact)" [md-tooltip]="'SAVE' | translate" color="accent" class="em-primary-btn" md-icon-button type="button" (click)="saveContact(customer.id, contact, address.id, $event)"><md-icon>check</md-icon></button> -->
+              </div>
+              <div class="md-padding flex flex-33">
+                <inline-edit [required]="true" [label]="'CONTACT_TYPE' | translate" [(ngModel)]="contact.contactType" name="contact.contactType{{setFormName(addressIndex, contactIndex)}}" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="md-padding flex flex-33">
+                <inline-edit [required]="true" [label]="'CONTACT_NAME' | translate" [(ngModel)]="contact.contactName" name="contact.contactName{{setFormName(addressIndex, contactIndex)}}" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="md-padding flex flex-44">
+                <inline-edit type="email" [param]="contact" [pattern]="emailRegExp" [label]="'CONTACT_EMAIL' | translate" [(ngModel)]="contact.contactEmail" name="contact.contactEmail{{setFormName(addressIndex, contactIndex)}}" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="md-padding flex flex-33">
+                <inline-edit type="tel" [param]="contact" [pattern]="phoneRegExp" [label]="'CONTACT_PHONE' | translate" [(ngModel)]="contact.contactPhone" name="contact.contactPhone{{setFormName(addressIndex, contactIndex)}}" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="md-padding flex flex-33">
+                <inline-edit type="tel" [param]="contact" [pattern]="phoneRegExp" [label]="'CONTACT_FAX' | translate" [(ngModel)]="contact.contactFax" name="contact.contactFax{{setFormName(addressIndex, contactIndex)}}" classNames="textfield inline-block"></inline-edit>
+              </div>
+              <div class="sub-form full-width">
+                <div class="md-padding flex">
+                  <md-slide-toggle [(ngModel)]="contact.notifyBySms" name="contact.notifyBySms{{setFormName(addressIndex, contactIndex)}}">{{'NOTIFY_BY_SMS' | translate}}</md-slide-toggle>
+                </div>
+                <div class="md-padding flex">
+                  <md-slide-toggle [(ngModel)]="contact.notifyByEmail" name="contact.notifyByEmail{{setFormName(addressIndex, contactIndex)}}">{{'NOTIFY_BY_EMAIL' | translate}}</md-slide-toggle>
+                </div>
+                <div class="md-padding flex">
+                  <md-slide-toggle [(ngModel)]="contact.sendInvoiceByEmail" name="contact.sendInvoiceByEmail{{setFormName(addressIndex, contactIndex)}}">{{'INVOICE_BY_EMAIL' | translate}}</md-slide-toggle>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="md-padding">
+              <a (click)="addContact(addressIndex, address)" class="card-link no-float">
+                <md-icon>add</md-icon> {{'ADD_CONTACT' | translate}}</a>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="align left">
+
+        </div>
+        <div class="md-padding button-toolbar">
+          <button md-button type="button" color="warn" (click)="delete(customer.id)" class="float-left">{{'DELETE' | translate}}</button>
+
+          <button md-button [disabled]="isLoading || hasError()" type="submit" class="float-right em-primary-btn">
+            <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner> {{'SAVE_CUSTOMER' | translate}}</button>
+          <button md-button type="button" class="float-right" (click)="cancelForm()">{{'CANCEL' | translate}}</button>
+          <button md-button type="button" class="float-right" (click)="addAddress()"><md-icon>add</md-icon> {{'ADD_ADDRESS' | translate}}</button>
+        </div>
+        <div class="clear"></div>
+      </form>
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+    </md-card-content>
+  </md-card>
+</div>

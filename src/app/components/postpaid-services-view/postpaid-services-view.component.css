@@ -1,0 +1,30 @@
+div {
+  font-size: 16px;
+}
+
+form
+{
+   font-size:16px;
+}
+
+md-input[type=text], select {
+    width: 70%;
+    padding: 5px 2px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+}
+h2{
+   padding-left: 10px;
+}
+
+label{
+  display: block;
+}
+
+p {
+  line-height: 1.4em;
+  display: block;
+  padding: 10px;
+}

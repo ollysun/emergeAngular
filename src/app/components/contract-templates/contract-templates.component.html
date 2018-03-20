@@ -1,0 +1,75 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'SEARCH' | translate}} {{'CONTRACT_TEMPLATES' | translate}}</h1>
+      <a routerLink="/backoffice/contract-template/create" class="float-right card-link">
+        <md-icon>add</md-icon> {{'CREATE_CONTRACT_TEMPLATE' | translate}}
+      </a>
+    </md-card-subtitle>
+    <md-card-content>
+      <form (submit)="search()" *ngIf="isSearchVisible">
+        <div class="row">
+          <div class="sub-form">
+            <div class="md-padding flex">
+              <label class="select-label display-block">{{'CONTRACT_TYPE'| translate}}</label>
+              <select name="contractTemplate.contractTYPE" [(ngModel)]="query.contract_type">
+                    <optgroup [label]="'CONTRACT_TYPE' | translate">
+                      <option *ngFor="let contractType of contractTypeEnum" [value]="contractType" [label]="contractType | translate">{{contractType | translate}}</option>
+                    </optgroup>
+              </select>
+            </div>
+            <div class="md-padding flex">
+              <md-input [placeholder]="'CREATION_DATE' | translate" [(ngModel)]='query.creationDate' name='query.creationDate' type="date"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [placeholder]="'MODIFICATION_DATE' | translate" [(ngModel)]='query.modificationDate' name='query.modificationDate' type="date"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]='query.description' name='query.description' placeholder="{{'DESCRIPTION' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]='query.content' name='contractTemplate.content' placeholder="{{'CONTENT' | translate}}"></md-input>
+            </div>
+          </div>
+        </div>
+        <md-card-actions class="align right md-padding">
+          <button type="button" md-button (click)="clear()">{{'CANCEL' | translate}}</button>
+          <button md-button class="em-primary-btn" [disabled]="isLoading">{{'SEARCH' | translate}}</button>
+        </md-card-actions>
+        <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+      </form>
+      <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+      <div class="no-results" *ngIf="!isLoading && searchResult.data.length === 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <table style='width:100%' *ngIf="searchResult.data.length > 0" class="search-results" border="1">
+        <thead>
+          <th>{{'ID' | translate}}</th>
+          <th>{{'CONTRACT_NAME' | translate}}</th>
+          <th>{{'CONTRACT_DESCRIPTION' | translate}}</th>
+          <th>{{'CREATION_DATE' | translate}}</th>
+          <th>{{'CONTRACT_TYPE' | translate}}</th>
+
+          <th>{{'ACTIONS' | translate }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of searchResult.data; let index=index; let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
+            <td>{{data.contractTemplateId}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.description}}</td>
+            <td>{{data.creationDate}}</td>
+            <td>{{data.contractType | translate}}</td>
+            <td>
+              <a [routerLink]="['/backoffice/contract-templates/', data.contractTemplateId]">
+                <md-icon>remove_red_eye</md-icon>
+              </a>
+              <a (click)="delete(data.contractTemplateId, index)" [md-tooltip]="'DELETE' | translate">
+                <md-icon>delete</md-icon>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-card-content>
+  </md-card>
+</div>

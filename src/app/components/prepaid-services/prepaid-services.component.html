@@ -1,0 +1,124 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle *ngIf="query.type !== 'TELOOPERATOR' || query.isLegacy" class="md-card-subtitle main-content-title">
+      <!-- Card Links Begin-->
+      <div class="card-links">
+        <!-- <a routerLink="/backoffice/prepaid-service/create"><md-icon>add</md-icon> {{'CREATE_PREPAID_SERVICE' | translate}}</a> -->
+        <!-- <a routerLink="/backoffice/payphones"><md-icon>phone</md-icon> {{'PAYPHONE_SERVICES' | translate}}</a> -->
+        <!-- <a routerLink="/backoffice/special-days"><md-icon>card_giftcards</md-icon> {{'Special Days' | translate}}</a>
+        <a routerLink="/backoffice/groups"><md-icon>group</md-icon> {{'Groups' | translate}}</a>
+        <a routerLink="/backoffice/groups"><md-icon>terrain</md-icon> {{'Zones' | translate}}</a>
+        <a routerLink="/backoffice/groups"><md-icon>group_work</md-icon> {{'Prefixes' | translate}}</a>
+        <a routerLink="/backoffice/tariff-versions"><md-icon>all_out</md-icon> {{'Versions' | translate}}</a> -->
+      </div>
+      <!-- Card Links End-->
+      <!-- <div class="card-links">
+        <a routerLink="/backoffice/prepaid-service/create">
+          <md-icon>add</md-icon> {{'CREATE_PREPAID_SERVICE' | translate}}
+        </a>
+      </div> -->
+      <h1>{{'SEARCH_PREPAID_SERVICE' | translate}}</h1>
+      <a routerLink="/backoffice/prepaid-service/create" class="float-right card-link">
+        <md-icon>add</md-icon> {{'CREATE_PREPAID_SERVICE' | translate}}
+      </a>
+    </md-card-subtitle>
+
+    <md-card-content>
+
+      <div *ngIf="query.type !== 'TELOOPERATOR' || query.isLegacy" data-identifier="prepaid-search-container">
+        <form #form="ngForm" (submit)="search()">
+          <div class="row">
+            <div class="sub-form">
+              <div class="md-padding flex" *ngIf="query.type != 'TELOAGENT'">
+                <md-input [(ngModel)]="query.external_provision_id" name="query.external_provision_id" [placeholder]="'EXTERNAL_PROVISION_ID' | translate"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <label class="select-label display-block">{{'SELECT_SERVICE_TYPE' | translate}}</label>
+                <select class="form-control" [(ngModel)]="query.type" name="query.serviceType">
+                <option *ngFor="let serviceType of serviceTypeEnum; let index=index;" [value]="serviceType" [label]="serviceType">{{serviceType}}</option>
+              </select>
+              </div>
+
+              <div class="md-padding flex">
+                <label class="select-label display-block">{{'SELECT_STATUS' | translate}}</label>
+                <select class="form-control" [(ngModel)]="query.status" name="query.status">
+                <option *ngFor="let status of statusEnum" [value]="status" [label]="status | translate">{{status | translate}}</option>
+              </select>
+              </div>
+              <br>
+              <div class="md-padding flex">
+                <md-checkbox *ngIf="query.type === 'TELOOPERATOR'" name="query.isLegacy" [(ngModel)]="query.isLegacy" value="true">
+                  {{'LEGACY_PAYPHONE' | translate}}
+                </md-checkbox>
+              </div>
+            </div>
+          </div>
+          <md-card-actions class="align right md-margin">
+            <button type="button" md-button (click)="clear()">{{'CLEAR' | translate}}</button>
+            <button type="submit" [disabled]="isLoading" class="em-primary-btn" md-button>{{'SEARCH' | translate}}</button>
+          </md-card-actions>
+          <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+          <app-prompt-dialog #promptDialog></app-prompt-dialog>
+        </form>
+
+        <hr class="md-margin">
+        <div class="clear md-margin">&nbsp;</div>
+        <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+        <div class="no-results" *ngIf="!isLoading && searchData.data.length <= 0" class="no-results">
+          {{'NO_SEARCH_RESULTS' | translate}}
+        </div>
+
+        <!-- <div class="align right export-link">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a></div> -->
+        <table *ngIf="!isLoading && searchData.data.length > 0" class="search-results">
+          <thead>
+            <tr>
+              <th>{{'NAME' | translate}}</th>
+              <th>{{'SERVICE_TYPE' | translate}}</th>
+              <th>{{'EXTERNAL_PROVISION_ID' | translate}}</th>
+              <th>{{'STATUS' | translate}}</th>
+              <!-- <th>{{'DELETED_REASON' | translate}}</th> -->
+              <th>{{'ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of searchData.data; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+              <td>{{data.name}}</td>
+              <td>{{data.serviceType}}</td>
+              <td>{{data.externalProvisionId}}</td>
+              <td>{{data.status | translate}}</td>
+              <!-- <td>{{data.deletedReason}}</td> -->
+              <td>
+                <a [routerLink]="['/backoffice/prepaid-services/', data.servicePrepaidId]">
+                  <md-icon>remove_red_eye</md-icon>
+                </a>
+                <a *ngIf="data.status !== 'ACTIVE'" (click)="delete(data, index, $event)">
+                  <md-icon>delete</md-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="query.type === 'TELOOPERATOR' && !(query.isLegacy)" data-identifier="payphones-search-container">
+        <md-card-subtitle>
+          <h1 class="float-left">{{'SEARCH' | translate}} {{'PAYPHONES' | translate}}</h1>
+          <div class="card-links float-right width-45">
+            <button md-button (click)="clear()" type="button"><md-icon>undo</md-icon> {{'RETURN' | translate}}</button>
+          </div>
+        </md-card-subtitle>
+
+        <md-card-actions class="align right md-padding">
+          <a routerLink="/backoffice/prepaid-service/create" class="float-right card-link">
+            <md-icon>add</md-icon> {{'CREATE_PREPAID_SERVICE' | translate}}
+          </a>
+        </md-card-actions>
+        <app-payphones></app-payphones>
+      </div>
+
+    </md-card-content>
+  </md-card>
+</div>

@@ -1,0 +1,53 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <!--<app-page-not-found *ngIf="!prepaid">
+  </app-page-not-found>-->
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{pageSubtitle | uppercase | translate }}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row"  (submit)="createPayment()">
+       <div class="md-padding flex">
+        <md-input name="paymentReferenceNumber" [(ngModel)]="formData.paymentReferenceNumber" placeholder="Payment Reference Number"></md-input>
+       </div>
+       <div class="md-padding flex">
+        <md-input name="value" [(ngModel)]="formData.value" placeholder="Value"></md-input>
+       </div>
+       <div class="md-padding flex v-top">
+        <label class="select-label display-block">{{'PAYMENT_METHOD' | translate}}</label>
+        <select name="paymentMethod" [(ngModel)]="formData.paymentMethod">
+         <optgroup [label]="'PAYMENT_METHOD' | translate">
+          <option value="EMIS">EMIS</option>
+          <option value="Cheque">Cheque</option>
+          <option value="Cash">Cash</option>
+          <option value="SEPA">SEPA</option>
+          <option value="Bordereau">Bordereau</option>
+          <option value="Bank Wire Transfer">Bank Wire Transfer</option>
+          <option value="Finance Discount">Finance Discount</option>
+          <option value="Reconciliation of Accounts">Reconciliation of Accounts</option>
+          <option value="Postal Receipts to Collection">Postal Receipts to Collection</option>
+          <option value="Internal Wallets">Internal Wallets</option>
+         </optgroup>
+        </select>
+       </div>
+       <div class="md-padding flex">
+        <md-input name="description" [(ngModel)]="formData.description" placeholder="Description"></md-input>
+       </div>
+
+       <div class="button-toolbar em-margin-top large">
+        <div class="md-padding flex">
+         <button md-button type="button" color="warn" class="align left">{{'CANCEL' | translate}}</button>
+        </div>
+        <div class="md-padding flex float-right">
+         <button md-button type="submit" class="em-primary-btn" [disabled]="isLoading">
+          <md-spinner class="em-spinner x-small in-button" color="accent"  *ngIf="isLoading"></md-spinner>
+          {{'CREATE_PAYMENT' | translate}}
+         </button>
+        </div>
+       </div>
+
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

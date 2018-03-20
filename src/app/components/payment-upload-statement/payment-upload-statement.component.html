@@ -1,0 +1,60 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'UPLOAD_BANK_STATEMENT' | translate }}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row" #form="ngForm" (submit)="uploadStatement()" enctype="multipart/form-data">
+        <div>
+          <div class="flex flex-44 v-middle em-margin-top">
+            <label class="select-label display-block">{{'BANK_NAME' | translate}}</label>
+            <select name="upload.bankName" [(ngModel)]="upload.bankName">
+                <optgroup [label]="'BANK_NAME' | translate">
+                  <option *ngFor="let bankName of bankEnum" [label]="bankName" [value]="bankName" [label]="bankName">
+                    {{bankName | translate}}</option>
+                </optgroup>
+              </select>
+          </div>
+          <div class="flex float-right">
+            <input id="fileInput" type="file" hidden #fileInput (change)="uploadListener($event)" name="fileInput">
+            <md-input placeholder="{{'UPLOAD_FILE_STATEMENT'| translate }}" type="text" [(ngModel)]="upload.fileName" name="fileName" id="subfile" class="input-xlarge" readonly></md-input>
+            <button type="button" md-button class="btn btn-primary" (click)="fileInput.click()">{{'BROWSE' | translate}}</button>
+          </div>
+          <md-card-actions class="md-padding button-toolbar em-margin-top large" align="end">
+            <button md-button [disabled]="isLoading" type="button" (click)="clear()">{{'CLEAR' | translate}}</button>
+            <button md-button [disabled]="isLoading || !upload.fileName || !upload.bankName" type="submit" class="float-right em-primary-btn">
+              <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+              {{'UPLOAD_BANK_STATEMENT' | translate}}</button>
+          </md-card-actions>
+        </div>
+      </form>
+      <div class="sub-form full-width" *ngIf="uploadResponse.bankName && !showSummary">
+        <h4 class="md-headline main-content-subtitle">{{'STATEMENT_UPLOAD_SUMMARY' | translate }}</h4>
+        <form class="row" #form="ngForm" (submit)="confirmStatement()">
+          <div class="md-padding flex">
+            <md-input name="uploadResponse.bankName" [(ngModel)]="uploadResponse.bankName" disabled></md-input>
+          </div>
+          <div class="md-padding flex">
+            <md-input name="uploadResponse.description" [(ngModel)]="uploadResponse.description" disabled></md-input>
+          </div>
+          <div class="md-padding flex">
+            <md-input name="uploadResponse.numberOfEntries" [(ngModel)]="uploadResponse.numberOfEntries" disabled></md-input>
+          </div>
+          <div class="md-padding flex">
+            <md-input name="uploadResponse.totalSum" [(ngModel)]="uploadResponse.totalSum" disabled></md-input>
+          </div>
+          <div class="md-padding">
+            <md-textarea name="uploadResponse.fileId" class="full-width" [(ngModel)]="uploadResponse.fileId" disabled></md-textarea>
+          </div>
+          <div class="md-padding align right">
+            <button [disabled]="isLoading" md-button type="submit" class="float-right em-primary-btn">
+              <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+              {{'CONFIRM_STATEMENT' | translate}}</button>
+          </div>
+        </form>
+      </div>
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+    </md-card-content>
+  </md-card>
+</div>

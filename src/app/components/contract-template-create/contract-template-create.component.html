@@ -1,0 +1,42 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle>
+      <h1>{{'CREATE_CONTRACT_TEMPLATE' | translate }}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <form (submit)="create()">
+        <div class="row">
+          <div class="md-padding flex">
+            <md-input name="contractTemplate.name" [(ngModel)]='contractTemplate.name' placeholder="{{'NAME' | translate}}" required></md-input>
+          </div>
+          <div class="md-padding flex">
+            <label class="select-label display-block">{{'CONTRACT_TYPE'| translate}}</label>
+            <select name="contractTemplate.contractTYPE" [(ngModel)]="contractTemplate.contractType" required>
+                  <optgroup [label]="'CONTRACT_TYPE' | translate">
+                    <option *ngFor="let contractType of contractTypeEnum" [value]="contractType" [label]="contractType | translate">{{contractType | translate}}</option>
+                  </optgroup>
+                </select>
+          </div>
+          <div class="md-padding">
+            <md-textarea rows="2" minlength="5" class="full-width" name="contractTemplate.description" [(ngModel)]='contractTemplate.description' placeholder="{{'DESCRIPTION' | translate}}" required>
+            </md-textarea>
+          </div>
+
+          <div class="md-padding">
+            <label class="block">{{'CONTENT' | translate}}</label>
+            <br>
+            <rich-text-field class="full-width height-400" elementId="rich-editor" (onEditorKeyup)="keyupHandlerFunction($event)">
+            </rich-text-field>
+          </div>
+        </div>
+        <div class="md-padding align right">
+          <button md-button type="button" (click)="clear()">{{'CLEAR' | translate}}</button>
+          <button md-button class="em-primary-btn" [disabled]="isLoading || !contractTemplate.content" type="submit">
+              <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner> {{'SAVE' | translate}}
+          </button>
+        </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

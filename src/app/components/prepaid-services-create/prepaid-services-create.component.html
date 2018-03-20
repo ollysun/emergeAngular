@@ -1,0 +1,46 @@
+<app-backoffice-links></app-backoffice-links>
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'CREATE_PREPAID_SERVICE' | translate }}</h1>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row" (submit)="create()">
+        <div class="sub-form">
+          <md-card-subtitle class="md-card-subtitle">
+            <h2 class="md-headline main-content-subtitle">{{'PREPAID_DETAILS' | translate}}</h2>
+          </md-card-subtitle>
+          <div class="md-padding flex">
+            <label class="select-label display-block">{{'PRODUCT'| translate }}</label>
+            <select class="form-control" [(ngModel)]="prepaid.productId" name="prepaid.productId" (ngModelChange)="onChangeObj($event)" required>
+              <option *ngFor="let product of products" value={{product.id}}>{{product.text}}</option>
+            </select>
+          </div>
+          <div class="md-padding flex">
+            <md-input name="prepaid.name" [(ngModel)]="prepaid.name" placeholder="{{'NAME' | translate }}" required></md-input>
+          </div>
+          <div class="md-padding flex" *ngIf="prepaid.productId != 3  && !(prepaid.productId == 4 && !prepaid.isLegacy)">
+            <md-input name="prepaid.externalProvisionId" [(ngModel)]="prepaid.externalProvisionId" placeholder="{{'EXTERNAL_PROVISION_ID' | translate }}"></md-input>
+          </div>
+          <div class="md-padding flex">
+            <!-- <md-slide-toggle *ngIf="prepaid.productId == 4" name="prepaid.isLegacy" [(ngModel)]="prepaid.isLegacy">
+              {{'LEGACY_PAYPHONE' | translate}}
+            </md-slide-toggle> -->
+            <md-checkbox *ngIf="prepaid.productId == 4" name="prepaid.isLegacy" [(ngModel)]="prepaid.isLegacy" value="true">
+              {{'LEGACY_PAYPHONE' | translate}}
+            </md-checkbox>
+          </div>
+        </div>
+
+        <app-payphone-create #payphoneCreateComponent *ngIf="prepaid.productId == 4 && !prepaid.isLegacy" [payphone]="payphone"></app-payphone-create>
+        <div class="md-padding button-toolbar align right">
+          <button [disabled]="isLoading" md-button type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+          <button [disabled]="isLoading" md-button class="em-primary-btn">
+            <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner> {{'SAVE_PREPAID' | translate}}
+          </button>
+        </div>
+
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

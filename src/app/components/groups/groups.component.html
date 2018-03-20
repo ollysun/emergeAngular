@@ -1,0 +1,206 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'TARIFF_SEARCH' | translate}}</h1>
+      <a routerLink="/backoffice/group/create" class="card-link">
+        <md-icon>add circle</md-icon> {{'CREATE_GROUP' | translate}}
+      </a>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="row" (submit)="onSubmit($event)">
+        <div class="row">
+          <div class="md-padding flex v-top md-padding-adjusted">
+            <md-card-subtitle class="md-card-subtitle">
+              <h2 class="md-headline main-content-subtitle">{{'SEARCH_GROUPS' | translate}}</h2></md-card-subtitle>
+            <div class="md-padding flex">
+              <md-input name="groupsQuery.id" [(ngModel)]="groupsQuery.id" placeholder="{{'GROUP_ID' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="groupsQuery.name" [(ngModel)]="groupsQuery.name" placeholder="{{'GROUP_NAME' | translate}}"></md-input>
+            </div>
+            <br />
+            <!-- <div class="md-padding flex"><md-input #search.groupDummy placeholder="" style="visibility:hidden;"></md-input></div> -->
+            <div class="md-padding flex v-top checkbox-div">
+              <md-checkbox>{{'NATION' | translate}}</md-checkbox>
+            </div>
+            <div class="md-padding flex v-top">
+              <button [disabled]="isLoading" class="adjusted" md-raised-button type="button" (click)="searchGroups()">{{'SEARCH' | translate}}</button>
+            </div>
+          </div>
+          <!-- <div style="margin: 10px;border: 1px solid #333;height:100%;width:1px;">
+        </div> -->
+          <div class="md-padding flex v-top md-padding-adjusted">
+            <md-card-subtitle class="md-card-subtitle">
+              <h2 class="md-headline main-content-subtitle">{{'SEARCH_ZONES' | translate}}</h2></md-card-subtitle>
+            <div class="md-padding flex">
+              <md-input name="zonesQuery.id" [(ngModel)]="zonesQuery.id" placeholder="{{'ZONE_ID' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="zonesQuery.name" [(ngModel)]="zonesQuery.name" placeholder="{{'ZONE_NAME' | translate}}"></md-input>
+            </div>
+            <br />
+            <!-- <div class="md-padding flex">
+              <md-input #search.zoneDummy placeholder="" style="visibility:hidden;"></md-input>
+            </div> -->
+            <div class="md-padding flex">
+              <!--<select name="zonesQuery.groupId" [(ngModel)]="zonesQuery.groupId" placeholder="Group">
+              <optgroup [label]="'GROUP' | translate">
+               <!-<option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
+               <option *ngFor="let group of groupsAutocompleteData" value="{{group.id}}">{{group.name}}</option>
+              </optgroup>
+             </select>-->
+             <md-input name="zonesQuery.groupId" ng2-auto-complete [source]="groupsAutoCompleteData" [(ngModel)]="zonesQuery.groupId"
+              [placeholder]="'SELECT_GROUP' | translate" value-property-name="id" display-property-name="name"
+              (keyup)="fetchGroupsAutocompleteData($event)">
+            </md-input>
+            </div>
+            <div class="md-padding flex v-top">
+              <button [disabled]="isLoading" class="adjusted" md-raised-button type="button" (click)="searchZones()">{{'SEARCH' | translate}}</button>
+            </div>
+          </div>
+
+
+          <div class="md-padding flex v-top">
+            <md-card-subtitle class="md-card-subtitle">
+              <h2 class="md-headline main-content-subtitle">{{'SEARCH_PREFIX' | translate}}</h2></md-card-subtitle>
+            <div class="md-padding flex">
+              <md-input name="prefixesQuery.id" [(ngModel)]="prefixesQuery.id" placeholder="{{'PREFIX_ID' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="prefixesQuery.name" [(ngModel)]="prefixesQuery.name" placeholder="{{'VALUE' | translate}}"></md-input>
+            </div>
+            <span class="inline-block" style="margin-right:20px;">&nbsp;</span>
+            <div class="md-padding flex">
+              <select name="prefixesQuery.country" [(ngModel)]="prefixesQuery.country" placeholder="Country">
+             <optgroup [label]="'COUNTRY' | translate">
+               <option *ngFor="let country of countries" [label]="country.name" [value]="country.id">{{country.name}}</option>
+             </optgroup>
+           </select>
+            </div>
+            <div class="md-padding flex">
+              <select name="prefixesQuery.zone" [(ngModel)]="prefixesQuery.zone" placeholder="Zone">
+             <optgroup [label]="'ZONE' | translate">
+               <option *ngFor="let zone of zones" value="{{zone.id}}">{{zone.name}}</option>
+             </optgroup>
+           </select>
+            </div>
+            <md-card-actions class="align right position-relative" style="right:58px;">
+              <button [disabled]="isLoading" md-raised-button type="button" (click)="searchPrefixes()">{{'SEARCH' | translate}}</button>
+            </md-card-actions>
+          </div>
+
+
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="clear">&nbsp;</div>
+      </form>
+
+      <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+
+      <div *ngIf="groupSearch && groups.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <div *ngIf="groupSearch && groups.length > 0">
+       <md-card-subtitle class="md-card-subtitle main-content-title">
+        <h1 class="text-centered">{{'GROUPS' | translate}}</h1>
+
+       </md-card-subtitle>
+       <table class="search-results">
+        <thead>
+          <tr>
+            <th>{{'GROUP_ID' | translate}}</th>
+            <th>{{'GROUP_NAME' | translate}}</th>
+            <th>{{'GROUP_DESCRIPTION' | translate}}</th>
+            <!--<th>{{'NATION' | translate}}</th>-->
+            <th>{{'ACTIONS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of groups; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+            <!--<td><md-input #search.id placeholder="{{'GROUP_ID' | translate}}"></md-input></td>-->
+            <td>{{group.id}}</td>
+            <td><inline-edit label="" [(ngModel)]="group.name" name="groupName" classNames="textfield inline-block" title="Click to edit">{{group.name}}</inline-edit></td>
+            <td><inline-edit label="" [(ngModel)]="group.description" name="groupDescription" classNames="textfield inline-block" title="Click to edit">{{group.description}}</inline-edit></td>
+            <!--<td><md-slide-toggle [(ngModel)]="group.nation" name="groupNation">{{group.nation}}</md-slide-toggle></td>-->
+            <td>
+             <a (click)="updateGroup(group)" class="cursor-pointer"><md-icon title="{{'UPDATE' | translate}}">save</md-icon></a>
+             <!-- <a (click)="restoreGroup(group)" class="cursor-pointer"><md-icon title="{{'RESTORE' | translate}}">restore</md-icon></a> -->
+             <a (click)="deleteGroup(group)" class="cursor-pointer"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+            </td>
+          </tr>
+        </tbody>
+       </table>
+      </div>
+
+      <div *ngIf="zoneSearch && zones.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <div *ngIf="zoneSearch && zones.length > 0">
+       <md-card-subtitle class="md-card-subtitle main-content-title">
+         <h1 class="text-centered">{{'ZONES' | translate}}</h1>
+
+       </md-card-subtitle>
+       <table class="search-results">
+        <thead>
+          <tr>
+            <th>{{'ID' | translate}}</th>
+            <th>{{'NAME' | translate}}</th>
+            <th>{{'DESCRIPTION' | translate}}
+            <th>{{'GROUP' | translate}} ID</th>
+            <th>{{'ACTIONS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let zone of zones; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+            <td>{{zone.id}}</td>
+            <td><inline-edit [(ngModel)]="zone.name" name="zoneName" classNames="textfield inline-block" title="Click to edit">{{zone.name}}</inline-edit></td>
+            <td><inline-edit [(ngModel)]="zone.description" name="zoneDescription" classNames="textfield inline-block" title="Click to edit">{{zone.description}}</inline-edit></td>
+            <td><inline-edit [(ngModel)]="zone.groupId" name="zoneGroup" classNames="textfield inline-block" title="Click to edit">{{zone.groupId}}</inline-edit></td>
+            <td>
+             <a (click)="updateZone(zone)" class="cursor-pointer"><md-icon title="{{'UPDATE' | translate}}">save</md-icon></a>
+             <!-- <a (click)="restoreZone(zone)" class="cursor-pointer"><md-icon title="{{'RESTORE' | translate}}">restore</md-icon></a> -->
+             <a (click)="deleteZone(zone)" class="cursor-pointer"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+            </td>
+          </tr>
+        </tbody>
+       </table>
+      </div>
+
+      <div *ngIf="prefixSearch && prefixes.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <div *ngIf="prefixSearch && prefixes.length > 0">
+       <md-card-subtitle class="md-card-subtitle main-content-title">
+        <h1 class="text-centered">{{'PREFIXES' | translate}}</h1>
+
+       </md-card-subtitle>
+       <table class="search-results">
+        <thead>
+          <tr>
+            <th>{{'PREFIX_ID' | translate}}</th>
+            <th>{{'VALUE' | translate}}</th>
+            <th>{{'COUNTRY' | translate}}</th>
+            <!--<th>{{'ZONE' | translate}} ID</th>-->
+            <th>{{'DESCRIPTION' | translate}} ID</th>
+            <th>{{'ACTIONS' | translate}}
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prefix of prefixes; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+           <td>{{prefix.id}}</td>
+           <td><inline-edit type="number" [(ngModel)]="prefix.value" name="prefixValue" classNames="textfield inline-block" title="Click to edit">{{prefix.value}}</inline-edit></td>
+           <td><inline-edit [(ngModel)]="prefix.country" name="prefixCountry" classNames="textfield inline-block" title="Click to edit">{{prefix.country}}</inline-edit></td>
+           <td><inline-edit [(ngModel)]="prefix.description" name="prefixDescription" classNames="textfield inline-block" title="Click to edit">{{prefix.description}}</inline-edit></td>
+           <!--<td><inline-edit [(ngModel)]="prefix.zoneId" name="prefixZone" classNames="textfield inline-block" title="Click to edit">{{prefix.zoneId}}</inline-edit></td>-->
+           <td>
+             <a (click)="updatePrefix(prefix)" class="cursor-pointer"><md-icon title="{{'UPDATE' | translate}}">save</md-icon></a>
+             <!-- <a (click)="restorePrefix(prefix)" class="cursor-pointer"><md-icon title="{{'RESTORE' | translate}}">restore</md-icon></a> -->
+             <a (click)="deletePrefix(prefix)" class="cursor-pointer"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+           </td>
+          </tr>
+        </tbody>
+       </table>
+      </div>
+
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+
+    </md-card-content>
+  </md-card>
+</div>

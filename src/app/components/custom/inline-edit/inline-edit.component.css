@@ -1,0 +1,66 @@
+div.inline-edit {
+  text-decoration: none;
+  border-bottom: #A8B9CE dashed 1px;
+  cursor: pointer;
+  text-align: left;
+  padding: .5em 0;
+  color: #444 !important;
+  width: auto;
+}
+
+.small-box {
+  height: 8px;
+  width: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: red;
+  display: inline-block;
+}
+
+.error .form-control.ng-pristine.ng-valid.ng-touched .md-input-wrapper .md-input-underline {
+  border-color: red;
+}
+
+.error md-input {
+  width: auto;
+}
+
+.error .md-input-placeholder {
+  color: red;
+}
+
+div.inline-edit:hover {
+  color: #A8B9CE !important;
+}
+
+.inlineEditForm {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0;
+}
+
+md-textarea, .inline-textarea {
+  width: 100%;
+}
+
+#inlineEditWrapper {
+  display: inline-block;
+}
+
+.inlineEditForm input, select {
+  width: auto;
+  display: inline;
+}
+
+.editInvalid {
+  color: #a94442;
+  margin-bottom: 0;
+}
+
+.error {
+  border-color: #a94442;
+}
+
+[hidden] {
+  display: none;
+}

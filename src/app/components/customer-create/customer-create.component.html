@@ -1,0 +1,140 @@
+<app-backoffice-links></app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card class="medium-width-containe">
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'CREATE_CUSTOMER' | translate}}</h1>
+
+    </md-card-subtitle>
+    <md-card-content>
+      <form (submit)="create()">
+        <div class="row">
+          <div class="sub-form">
+            <h2 class="md-headline main-content-subtitle">{{'CUSTOMER_INFORMATION' | translate}}</h2>
+            <div class="md-padding">
+              <md-input class="flex-88" [(ngModel)]="customer.name" name="customer.name" [placeholder]="'NAME' | translate" required></md-input>
+            </div>
+            <div class="md-padding">
+              <rl-tag-input class="flex-88" [(ngModel)]="tags" name="tags" [placeholder]="'TAGS' | translate"></rl-tag-input>
+            </div>
+          </div>
+          <div class="sub-form">
+            <h2 class="md-headline main-content-subtitle">{{'FISCAL_INFORMATION' | translate}}</h2>
+            <div class="md-padding position-relative">
+              <md-input class="flex-88" [(ngModel)]="customer.fiscalNumber" minlength="9" maxlength="9" min="100000000" max="799999999" [pattern]="fiscalRegExp" name="customer.fiscalNumber" type="number"   placeholder="{{'FISCAL_NUMBER' | translate}}" required></md-input>
+
+              <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="customer.fiscalNumber && !fiscalNumberRegExp.test(customer.fiscalNumber)" class="flex em-error-dot"></div>
+            </div>
+            <div class="md-padding">
+              <rl-tag-input class="flex-88" [(ngModel)]="taxExemptionCertificates" name="taxExemptionCertificates" [placeholder]="'TAX_EXCEPTION_CERTIFICATES' | translate"></rl-tag-input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="sub-form">
+              <h2 class="md-headline main-content-subtitle">{{'PERSONAL_INFORMATION' | translate}}</h2>
+              <div class="md-padding flex">
+                <md-input type="url" [(ngModel)]="customer.website" name="customer.website" placeholder="{{'WEBSITE' | translate}}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <label class="select-label display-block">{{'COUNTRY' | translate}}</label>
+                <select [(ngModel)]="customer.country" name="customer.country" required>
+                  <optgroup [label]="'COUNTRY' | translate">
+                    <option *ngFor="let country of countries" [label]="country.name" [value]="country.code">{{country.name}}</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="sub-form full-width">
+              <h2 class="md-headline main-content-subtitle">{{'NOTES' | translate}}</h2>
+              <div class="flex width-45 md-padding">
+                <md-textarea [(ngModel)]="customer.publicNotes" name="customer.publicNotes" [placeholder]="'PUBLIC_NOTES' | translate"></md-textarea>
+              </div>
+              <div class="md-padding flex  width-45 md-padding">
+                <md-textarea [(ngModel)]="customer.privateNotes" name="customer.privateNotes" [placeholder]="'PRIVATE_NOTES' | translate"></md-textarea>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+          <div class="sub-form full-width" *ngFor="let address of customer.customerAddresses; let addressIndex=index;">
+            <h2 class="md-headline main-content-subtitle">{{ addressIndex + 1 }}.
+              {{'BILLING_ADDRESS' | translate}}</h2>
+            <div class="float-right v-middle">
+              <button type="button" md-icon-button color="accent" *ngIf="addressIndex > 0" (click)="removeAddress(addressIndex)"><md-icon>delete</md-icon></button>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]="address.addressName" name="address.addressName.{{adressIndex}}" placeholder="Fiscal {{'ADDRESS_NAME' | translate}}" required></md-input>
+            </div>
+            <div class="md-padding flex position-relative">
+              <md-input type="tel" [(ngModel)]="address.faxNumber" name="address.faxNumber.{{adressIndex}}" placeholder="{{'FAX_NUMBER' | translate}}"></md-input>
+              <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="address.faxNumber && !phoneRegExp.test(address.faxNumber)" class="flex em-error-dot"></div>
+            </div>
+            <div class="md-padding flex position-relative">
+              <md-input type="tel" [pattern]="phoneRegExp" [(ngModel)]="address.telephoneNumber" name="address.telephoneNumber.{{adressIndex}}" placeholder="{{'TELEPHONE_NUMBER' | translate}}" ></md-input>
+              <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="address.telephoneNumber && !phoneRegExp.test(address.telephoneNumber)" class="flex em-error-dot"></div>
+            </div>
+            <div class="md-padding flex">
+              <md-input [(ngModel)]="address.email" name="address.email.{{adressIndex}}" placeholder="{{'EMAIL' | translate}}" type="email"></md-input>
+            </div>
+            <div class="md-padding">
+              <md-textarea [(ngModel)]="address.address" name="address.address.{{adressIndex}}" [placeholder]="'ADDRESS' | translate" required></md-textarea>
+            </div>
+            <div class="sub-form full-width" *ngFor="let contact of address.contacts; let contactIndex=index;">
+              <h2 class="md-headline main-content-subtitle">{{ (addressIndex+1) + '.' + (contactIndex+1) }}.
+                {{'CONTACT' | translate}}</h2>
+              <div class="float-right v-middle">
+                <button type="button" md-icon-button color="accent" (click)="removeContact(addressIndex, contactIndex)"><md-icon>delete</md-icon></button>
+              </div>
+              <div class="md-padding flex">
+                <md-input [(ngModel)]="contact.contactType" name="contact.contactType{{setFormName(addressIndex, contactIndex)}}" [placeholder]="'CONTACT_TYPE' | translate" required></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input [(ngModel)]="contact.contactName" name="contact.contactName{{setFormName(addressIndex, contactIndex)}}" [placeholder]="'CONTACT_NAME' | translate" required></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input [(ngModel)]="contact.contactEmail" name="contact.contactEmail{{setFormName(addressIndex, contactIndex)}}" [placeholder]="'CONTACT_EMAIL' | translate" type="email" ></md-input>
+              </div>
+              <div class="md-padding flex position-relative">
+                <md-input [(ngModel)]="contact.contactFax" name="contact.contactFax{{setFormName(addressIndex, contactIndex)}}" [placeholder]="'CONTACT_FAX' | translate" type="tel"  [pattern]="phoneRegExp"></md-input>
+
+                <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="contact.contactFax && !phoneRegExp.test(contact.contactFax)" class="flex em-error-dot"></div>
+              </div>
+              <div class="md-padding flex position-relative">
+                <md-input type="tel" [pattern]="phoneRegExp" [(ngModel)]="contact.contactPhone" name="contact.contactPhone{{setFormName(addressIndex, contactIndex)}}" [placeholder]="'TELEPHONE_NUMBER' | translate"></md-input>
+
+                <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="contact.contactPhone && !phoneRegExp.test(contact.contactPhone)" class="flex em-error-dot"></div>
+              </div>
+              <div class="md-padding flex">
+                <md-slide-toggle [(ngModel)]="contact.notifyByEmail" name="contact.notifyByEmail{{setFormName(addressIndex, contactIndex)}}">{{'NOTIFY_BY_EMAIL' | translate}}</md-slide-toggle>
+              </div>
+              <div class="md-padding flex">
+                <md-slide-toggle [(ngModel)]="contact.notifyBySms" name="contact.notifyBySms{{setFormName(addressIndex, contactIndex)}}">{{'NOTIFY_BY_SMS' | translate}}</md-slide-toggle>
+              </div>
+              <div class="md-padding flex">
+                <md-slide-toggle [(ngModel)]="contact.sendInvoiceByEmail" name="contact.sendInvoiceByEmail{{setFormName(addressIndex, contactIndex)}}">{{'INVOICE_BY_EMAIL' | translate}}</md-slide-toggle>
+              </div>
+              <!-- </div> -->
+
+            </div>
+            <div class="md-margin">
+              <a (click)="addContact(addressIndex)" class="card-link">
+                <md-icon>add</md-icon>
+                {{'ADD_CONTACT' | translate}}</a>
+            </div>
+          </div>
+          <div class="md-margin">
+            <button class="align left" md-button type="button" (click)="cancelCustomer()">{{'CLEAR' | translate}}</button>
+            <div class="flex float-right">
+              <button md-button type="button" (click)="addAddress()"><md-icon>add</md-icon> {{'ADD_ADDRESS' | translate}}</button>
+              <button md-button class="em-primary-btn" [disabled]="isLoading || hasError()">
+                <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner> {{'SAVE_CUSTOMER' | translate}}
+              </button>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

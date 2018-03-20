@@ -1,0 +1,23 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="main-content-body">
+ <md-card class="medium-width-containe">
+  <md-card-subtitle class="md-card-subtitle">
+    <h1 class="main-content-title">{{'CREATE_TARIFF_VERSION' | translate}}</h1>
+  </md-card-subtitle>
+  <md-card-content>
+   <form class="row" (submit)="create($event)">
+    <div class="row">
+     <div class="md-padding flex v-top">
+      <div class="md-padding flex"><md-input name="description" [(ngModel)]="tariffVersion.description" placeholder="{{'DESCRIPTION' | translate}}"></md-input></div>
+      <div class="md-padding flex">
+        <md-input name="activationDate" [(ngModel)]="tariffVersion.activationDate" placeholder="{{'ACTIVATION_DATE' | translate}}" type="date"></md-input>
+      </div>
+      <div class="md-padding flex" (click)="cancel()"><button type="button" md-raised-button>{{'CANCEL' | translate}}</button></div>
+      <div class="md-padding flex"><button md-raised-button>{{'CREATE' | translate}}</button></div>
+     </div>
+    </div>
+   </form>
+  </md-card-content>
+ </md-card>
+</div>

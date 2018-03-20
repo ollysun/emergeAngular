@@ -1,0 +1,19 @@
+<div class="md-padding flex v-top">
+ <md-card-subtitle class="md-card-subtitle"><h2 class="md-headline">{{'CONTACT' | translate}}</h2></md-card-subtitle>
+ <div class="md-padding flex v-top">
+   <md-input [(ngModel)]="contact.contactType" name="contact.contactType" [placeholder]="'CONTACT_TYPE' | translate"></md-input>
+ </div>
+ <div class="md-padding flex">
+  <md-input [(ngModel)]="contact.contactName" name="contact.contactName" [placeholder]="'CONTACT_NAME' | translate"></md-input>
+ </div>
+ <div class="md-padding flex">
+  <md-input [(ngModel)]="contact.contactEmail" name="contact.contactEmail" [placeholder]="'CONTACT_EMAIL' | translate" type="email"></md-input>
+ </div>
+ <div class="md-padding flex">
+  <md-input [(ngModel)]="contact.contactPhone" name="contact.contactPhone" [placeholder]="'CONTACT_PHONE' | translate"></md-input>
+ </div>
+ <div class="md-padding flex">
+  <md-input [(ngModel)]="contact.contactFax" name="contact.contactFax" [placeholder]="'CONTACT_FAX' | translate"></md-input>
+ </div>
+
+</div>

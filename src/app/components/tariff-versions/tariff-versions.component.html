@@ -1,0 +1,79 @@
+<app-backoffice-links></app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+   <md-card-subtitle class="md-card-subtitle main-content-title"><h1>{{'TARIFF_VERSIONS' | translate}}</h1>
+     <div class="card-links">
+       <a routerLink="/backoffice/special-days"><md-icon></md-icon> {{'SPECIAL_DAYS' | translate}}</a>
+       <a routerLink="/backoffice/tariff-versions" class="active"><md-icon></md-icon> {{'TARIFF_VERSIONS' | translate}}</a>
+     </div>
+     <div class="clear">&nbsp;</div>
+     <a class="card-link"><md-icon>add circle</md-icon> {{'CREATE_TARIFF_VERSION' | translate}}</a>
+   </md-card-subtitle>
+   <md-card-content>
+     <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+     <div *ngIf="!isLoading && tariffVersions.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+     <div *ngIf="!isLoading && tariffVersions.length > 0" class="align right export-link">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a> </div>
+     <table class="search-results" *ngIf="!isLoading && tariffVersions.length > 0">
+      <thead>
+       <tr>
+        <th>{{'NAME' | translate}}</th>
+        <th>{{'DESCRIPTION' | translate}}</th>
+        <th>{{'STATUS' | translate}}</th>
+        <th>{{'CREATION_DATE' | translate}}</th>
+        <th>{{'MODIFIED_DATE' | translate}}</th>
+        <th>{{'ACTIVATION_DATE' | translate}}</th>
+        <th>{{'DEACTIVATION_DATE' | translate}}</th>
+        <th>{{'ACTIONS' | translate}}</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr *ngFor="let tv of tariffVersions; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+        <td>
+          <inline-edit [(ngModel)]="tv.name" name="tariffVersionName" classNames="textfield inline-block" title="Click to edit">{{tv.name}}</inline-edit>
+        </td>
+        <td>
+          <inline-edit [(ngModel)]="tv.description" name="tariffVersionDescription" classNames="textfield inline-block" title="Click to edit">{{tv.description}}</inline-edit>
+        </td>
+        <td>
+          <inline-edit [(ngModel)]="tv.status" name="tariffVersionStatus" classNames="textfield inline-block" title="Click to edit">{{tv.status}}</inline-edit>
+        </td>
+        <td>
+          <md-input [(ngModel)]="tv.creationDate" name="tariffVersionCreationDate" disabled>{{tv.creationDate}}</md-input>
+        </td>
+        <td>
+          <md-input [(ngModel)]="tv.modifiedDate" name="tariffVersionModifiedDate" disabled>{{tv.modifiedDate}}</md-input>
+        </td>
+        <td>
+          <md-input [(ngModel)]="tv.activationDate" name="tariffVersionActivationDate" disabled>{{tv.activationDate}}</md-input>
+        </td>
+        <td>
+          <md-input [(ngModel)]="tv.deactivationDate" name="tariffVersionDeactivationDate" disabled>{{tv.deactivationDate}}</md-input>
+        </td>
+        <td>
+          <a [routerLink]="['/backoffice/tariff-versions/', tv.id]"><md-icon>remove_red_eye</md-icon></a>
+
+          <div [hidden]="true">
+           <a (click)="save(index)" class="cursor-pointer">
+            <md-icon *ngIf="tv.id" title="{{'SAVE' | translate}}">save</md-icon>
+            <button *ngIf="!(tv.id)" color="accent" md-icon-button [disabled]="isLoading" type="button" (click)="create()">
+             <md-icon title="{{'CREATE' | translate}}">check_circle</md-icon>
+            </button>
+           </a>
+           <a *ngIf="tv.id" (click)="delete(tv)" class="cursor-pointer"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+           <a (click)="cancel(index)" class="cursor-pointer">
+            <md-icon title="{{'CANCEL' | translate}}">restore</md-icon>
+           </a>
+          </div>
+
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    <!--</div>-->
+    <div class="clear"></div>
+    <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+
+   </md-card-content>
+ </md-card>
+</div>

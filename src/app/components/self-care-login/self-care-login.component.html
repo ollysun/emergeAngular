@@ -1,0 +1,30 @@
+<md-card>
+  <md-card-subtitle>
+    <h2 class="main-content-subtitle">{{'LOGIN_TO_SELFCARE' | translate}}</h2>
+  </md-card-subtitle>
+  <md-card-content class="text-center">
+    <form (submit)="login()">
+      <div class="md-padding">
+        <md-input [disabled]="isLoading" [(ngModel)]="credentials.username" name="credentials.username" [placeholder]="'USERNAME' | translate" class="full-width autofocus"></md-input>
+      </div>
+      <div class="md-padding">
+        <md-input [disabled]="isLoading" [(ngModel)]="credentials.password" name="credentials.password" [placeholder]="'PASSWORD' | translate" type="password" class="full-width"></md-input>
+      </div>
+      <div class="md-padding md-margin">
+        <a>{{'FORGOT_PASSWORD' | translate}}?</a>
+      </div>
+      <p *ngIf="message" class="error-message">{{message}}</p>
+      <div>
+        <button [disabled]="isLoading" color="accent" class="full-width login-button em-primary-btn" md-raised-button [disabled]="!credentials.username">{{'LOGIN' | translate}}</button>
+      </div>
+    </form>
+    <div class="telo-bg-img"></div>
+  </md-card-content>
+</md-card>
+<!-- <div>
+<md-input-inline label="Full name" [(ngModel)]="user.name" name="user.name">
+</md-input-inline>
+<em>Binding</em>
+<span> — </span>
+<code>{{user.name}}</code>
+</div> -->

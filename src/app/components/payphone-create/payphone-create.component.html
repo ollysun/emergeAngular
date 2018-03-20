@@ -1,0 +1,123 @@
+<!--<app-backoffice-links>
+</app-backoffice-links>-->
+
+<!--<div class="main-content-body">-->
+<!--<md-card>-->
+<md-card-subtitle class="md-card-subtitle main-content-title">
+  <h1>{{'PAYPHONE_INFORMATION' | translate}}</h1>
+
+</md-card-subtitle>
+<!--<md-card-content>-->
+<!--<form #form="ngForm" (submit)="create()">-->
+<!--<form #form="ngForm">-->
+<div class="sub-form">
+  <h2 class="md-headline main-content-subtitle">{{'GENERAL' | translate}}</h2>
+  <div class="md-padding flex v-top">
+    <label class="select-label display-block">{{'PROFILE_ID' | translate}}</label>
+    <select name="payphone.profileId" [(ngModel)]="payphone.profileId" required>
+              <option value="1">Default</option>
+            </select>
+  </div>
+</div>
+<div class="sub-form right-form">
+  <h2 class="md-headline main-content-subtitle">{{'PAYPHONE_CREDENTIALS' | translate}}</h2>
+  <div class="md-padding flex">
+    <!-- [pattern]="usernameRegExp" -->
+    <md-input (keyup)="validateUsername(payphone.credentials.username)" class="md-input" name="payphone.credentials.username" [(ngModel)]="payphone.credentials.username" placeholder="{{'USERNAME' | translate}}" required>
+    </md-input>
+    <!--<div *ngIf="form.valid || !formSubmitted || payphone.credentials.username" class="alert alert-danger">Username is required</div>-->
+    <div *ngIf="usernameIsValid" class="alert alert-danger">{{'USERNAME_CHARS' | translate}}</div>
+    <div *ngIf="usernameLengthIsOk" class="alert alert-danger">{{'USERNAME_LENGTH' | translate}}</div>
+  </div>
+  <div class="md-padding flex" style="margin:0; padding-right:0;">
+    <md-input class="password-field" name="payphone.credentials.password" [(ngModel)]="payphone.credentials.password" placeholder="{{'PASSWORD' | translate}}" disabled required></md-input>
+    <input class="no-padding  password-generate-button" type="button" md-raised-button [value]="'GENERATE' | translate" (click)="generatePassword()" />
+    <!--<div *ngIf="form.valid || !formSubmitted || payphone.credentials.password" class="alert alert-danger">Password is required</div>-->
+  </div>
+</div>
+
+<div class="sub-form sim-holder">
+  <h2 class="md-headline main-content-subtitle">SIM 1</h2>
+  <div class="md-padding flex">
+    <md-input type="tel" name="payphone.sim1.msisdn" [(ngModel)]="payphone.sim1.msisdn" placeholder="MSISDN" required></md-input>
+    <!--<div *ngIf="form.valid || !formSubmitted || payphone.sim1.msisdn" class="alert alert-danger">SIM 1 MSISDN is required</div>-->
+    <!-- <div *ngIf="!(payphone.sim1.msisdn) || (payphone.sim1.msisdn >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+  </div>
+  <div class="md-padding flex">
+    <md-radio-button (change)="selectPreferredMSISDN($event)" name="preferredMSISDN" value="sim1" [disabled]="!payphone.sim1.msisdn">{{'PREFERRED_MSISDN' | translate}}</md-radio-button>
+  </div>
+  <br>
+  <div class="md-padding flex">
+    <md-input name="payphone.sim1.iccid" [(ngModel)]="payphone.sim1.iccid" placeholder="ICCID" required></md-input>
+  </div>
+  <div class="md-padding flex">
+    <md-input name="payphone.sim1.imsi" [(ngModel)]="payphone.sim1.imsi" placeholder="IMSI" required></md-input>
+  </div>
+</div>
+<div class="sub-form sim-holder right-form">
+  <h2 class="md-headline main-content-subtitle">SIM 2</h2>
+  <div class="md-padding flex">
+    <md-input type="tel" name="payphone.sim2.msisdn" [(ngModel)]="payphone.sim2.msisdn" placeholder="MSISDN"></md-input>
+    <!--<div *ngIf="form.valid || !formSubmitted || payphone.sim2.msisdn" class="alert alert-danger">SIM 2 MSISDN is required</div>-->
+    <!-- <div *ngIf="!(payphone.sim2.msisdn) || (payphone.sim2.msisdn >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+  </div>
+  <div class="md-padding flex">
+    <md-radio-button (change)="selectPreferredMSISDN($event)" name="preferredMSISDN" value="sim2" [disabled]="!payphone.sim2.msisdn">{{'PREFERRED_MSISDN' | translate}}</md-radio-button>
+  </div>
+  <br>
+  <div class="md-padding flex">
+    <md-input name="payphone.sim2.iccid" [(ngModel)]="payphone.sim2.iccid" placeholder="ICCID"></md-input>
+  </div>
+  <div class="md-padding flex">
+    <md-input name="payphone.sim2.imsi" [(ngModel)]="payphone.sim2.imsi" placeholder="IMSI"></md-input>
+  </div>
+</div>
+
+<div class="config-holder">
+  <h2 class="md-headline main-content-subtitle">{{'CONFIGURATION_INFORMATION' | translate}}</h2>
+  <div class="md-padding flex">
+    <label class="select-label display-block">{{'DEFAULT_LANGUAGE' | translate}}</label>
+    <select [(ngModel)]="payphone.configData.defaultLanguage" name="payphone.configData.defaultLanguage" required>
+           <optgroup [label]="'DEFAULT_LANGUAGE' | translate">
+            <option value="ENGLISH">{{'ENGLISH' | translate}}</option>
+            <option value="FRENCH">{{'FRENCH' | translate}}</option>
+            <option value="PORTUGUESE">{{'PORTUGUESE' | translate}}</option>
+           </optgroup>
+          </select>
+  </div>
+  <div class="md-padding flex v-top">
+    <md-input type="number" min="10" name="payphone.configData.keepAliveInterval" [(ngModel)]="payphone.configData.keepAliveInterval" placeholder="{{'KEEP_ALIVE_INTERVAL' | translate}}" required></md-input>
+    <!-- <div *ngIf="!(payphone.configData.keepAliveInterval) || (payphone.configData.keepAliveInterval >= 0)" class="alert alert-danger">Value cannot be negative</div> -->
+  </div>
+  &nbsp;&nbsp;
+  <div class="md-padding flex v-top">
+    <!--<md-input type="number" name="payphone.configData.sendErrorsToOCS" [(ngModel)]="payphone.configData.sendErrorsToOCS" placeholder="{{'SEND_ERRORS_TO_OCS' | translate}}"></md-input>-->
+    <md-input type="number" min="10" placeholder="{{'SEND_ERRORS_TO_OCS' | translate}}" disabled value="0"></md-input>
+  </div>
+  <!-- <div class="md-padding float-right">
+            <button hidden md-raised-button type="button" (click)="addCreditButton()">{{'ADD_CREDIT_BUTTON' | translate}}</button>
+          </div> -->
+  <div class="clear">&nbsp;</div>
+  <!-- <div class="md-padding flex" *ngFor="let btn of payphone.configData.creditButtons; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+            <div class="md-padding flex">
+              <md-input [name]="'btn-label'+index" [(ngModel)]="btn.label" placeholder="{{'LABEL' | translate}}"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input [name]="'btn-amount'+index" [(ngModel)]="btn.amount" placeholder="{{'AMOUNT' | translate}}"></md-input>
+            </div>
+            <button md-raised-button type="button" (click)="removeCreditButton(index)" class="remove-credit-button" title="{{'REMOVE' | translate}}">x</button>
+          </div> -->
+</div>
+
+<!--<div class="md-padding button-toolbar">
+          <p *ngIf="message" class="error-message">{{message}}</p>
+          <br>
+          <div>
+            <button md-button type="button" (click)="cancel()">{{'CANCEL' | translate}}</button>
+            <button md-button [disabled]="isLoading" type="submit" md-raised-button class="float-right">{{'CREATE' | translate}}</button>
+          </div>
+        </div>-->
+<!--</form>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->

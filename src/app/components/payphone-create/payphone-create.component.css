@@ -1,0 +1,37 @@
+.no-padding {
+  padding: 0 !important;
+}
+
+.password-generate-button {
+  line-height: 25px;
+  font-size: 12px;
+  min-width: 40px;
+  margin-left: 2px;
+}
+
+.config-holder div {
+  /*margin-right: 20px;*/
+}
+
+.remove-credit-button {
+  min-width: 20px;
+  padding: 2px;
+  line-height: 20px;
+  color: #a22;
+  font-weight: bold;
+  position: relative;
+  top: 3px;
+  margin-left: 0;
+}
+
+.button-toolbar {
+
+}
+
+select {
+  border: 1px solid #999;
+}
+
+label, md-slide-toggle {
+  color: #999;
+}

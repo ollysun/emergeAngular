@@ -1,0 +1,121 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+ <md-card>
+  <md-card-subtitle class="md-card-subtitle main-content-title">
+   <h1>{{'SPECIAL_DAYS' | translate}}</h1>
+   <!--<a (click)="reset(); showEditForm()" class="card-link">
+     <md-icon>add circle</md-icon> {{'CREATE_SPECIAL_DAY' | translate}}
+   </a>-->
+   <a (click)="reset(); specialDays.unshift(specialDay)" class="card-link">
+     <md-icon>add circle</md-icon> {{'CREATE_SPECIAL_DAY' | translate}}
+   </a>
+  </md-card-subtitle>
+  <md-card-content>
+
+
+    <form #form="ngForm" (submit)="create()" *ngIf="isEditing">
+     <div class="sub-form">
+      <md-card-subtitle class="md-card-subtitle main-content-title text-centered">
+        <h2 *ngIf="!specialDay.id" class="md-headline">{{'CREATE_SPECIAL_DAY' | translate}}</h2>
+        <h2 *ngIf="specialDay.id" class="md-headline">{{'EDIT_SPECIAL_DAY' | translate}}</h2>
+
+      </md-card-subtitle>
+      <div class="md-padding flex v-top">
+       <md-input name="day" [(ngModel)]="specialDay.day" placeholder="{{'DAY' | translate}}" (click)="showAutoCompleteList('day', 'days')" (blur)="restrictValueTo('days', 'day');"></md-input>
+       <div class="suggestions" *ngIf="listType === 'days' && autoCompleteList.length > 0">
+        <ul>
+         <li *ngFor="let item of autoCompleteList" (click)="select('day', item)">
+           <div (click)="select('day', item)"><a (click)="select('day', item)">{{item}}</a></div>
+         </li>
+        </ul>
+       </div>
+       <div class="cancel" *ngIf="listType === 'days' && autoCompleteList.length > 0"><span class="cancel-text" (click)="resetAutoCompleteList()">x</span></div>
+      </div>
+      <div class="md-padding flex v-top">
+        <md-input name="month" [(ngModel)]="specialDay.month" placeholder="{{'MONTH' | translate}}" (click)="showAutoCompleteList('month', 'months')" (blur)="restrictValueTo('months', 'month');"></md-input>
+        <div class="suggestions" *ngIf="listType === 'months' && autoCompleteList.length > 0">
+         <ul>
+          <li *ngFor="let item of autoCompleteList" (click)="select('month', item)">
+            <div (click)="select('month', item)"><a (click)="select('month', item)">{{item}}&nbsp;({{item | uppercase | translate}})</a></div>
+          </li>
+         </ul>
+        </div>
+        <div class="cancel" *ngIf="listType === 'months' && autoCompleteList.length > 0"><span class="cancel-text" (click)="resetAutoCompleteList()">x</span></div>
+      </div>
+      <div class="md-padding flex v-top">
+       <md-input name="year" [(ngModel)]="specialDay.year" placeholder="{{'YEAR' | translate}}" (click)="showAutoCompleteList('year', 'years')" (blur)="restrictValueTo('years', 'year');"></md-input>
+       <div class="suggestions" *ngIf="listType === 'years' && autoCompleteList.length > 0">
+        <ul>
+         <li *ngFor="let item of autoCompleteList" (click)="select('year', item)">
+           <div (click)="select('year', item)"><a (click)="select('year', item)">{{item}}</a></div>
+         </li>
+        </ul>
+       </div>
+       <div class="cancel" *ngIf="listType === 'years' && autoCompleteList.length > 0"><span class="cancel-text" (click)="resetAutoCompleteList()">x</span></div>
+      </div>
+      <div class="md-padding flex v-top"><md-input name="description" [(ngModel)]="specialDay.description" placeholder="{{'DESCRIPTION' | translate}}"></md-input></div>
+     </div>
+     <div class="sub-fom">
+      <div class="md-padding flex"><button md-raised-button type="button" (click)="cancel()">{{'CANCEL' | translate}}</button></div>
+      <div class="md-padding flex float-right" style="position:relative; right:35px;">
+        <button *ngIf="!specialDay.id" md-raised-button>{{'CREATE' | translate}}</button>
+        <button *ngIf="specialDay.id" md-raised-button type="button" (click)="update()">{{'UPDATE' | translate}}</button>
+      </div>
+     </div>
+    </form>
+
+
+   <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+   <div *ngIf="!isLoading && specialDays.length <= 0">{{'NO_SEARCH_RESULTS' | translate}}</div>
+   <div *ngIf="specialDays.length > 0" class="align right">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a></div>
+   <table *ngIf="specialDays.length > 0" class="search-results">
+    <thead>
+     <tr>
+      <th>{{'ID' | translate}}</th>
+      <th>{{'DAY' | translate}}</th>
+      <th>{{'MONTH' | translate}}</th>
+      <th>{{'YEAR' | translate}}</th>
+      <th>{{'DESCRIPTION' | translate }}</th>
+      <th>{{'ACTIONS' | translate}}</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr *ngFor="let sDay of specialDays; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+      <td>{{sDay.id}}</td>
+      <td>
+        <!--{{sDay.day}}-->
+        <inline-edit [(ngModel)]="sDay.day" itemLabelKey="day" itemIdKey="day" [items]="daysObj" type="select" name="day" classNames="textfield inline-block" title="Click to edit" [optgroupLabel]="'DAY' | translate"></inline-edit>
+      </td>
+      <td>
+        <!--{{sDay.month | uppercase | translate}}-->
+        <inline-edit [(ngModel)]="sDay.month" itemLabelKey="month" itemIdKey="month" [items]="monthsObj" type="select" name="month" classNames="textfield inline-block" title="Click to edit" [optgroupLabel]="'MONTH' | translate"></inline-edit>
+      </td>
+      <td>
+        <!--{{sDay.year}}-->
+        <inline-edit [(ngModel)]="sDay.year" itemLabelKey="year" itemIdKey="year" [items]="yearsObj" type="select" name="year" classNames="textfield inline-block" title="Click to edit" [optgroupLabel]="'YEAR' | translate"></inline-edit>
+      </td>
+      <td>
+        <!--{{sDay.description}}-->
+        <inline-edit [(ngModel)]="sDay.description" name="description" classNames="textfield inline-block" title="Click to edit">{{sDay.description}}</inline-edit>
+      </td>
+      <td *ngIf="sDay.id">
+        <a class="cursor-pointer" (click)="this.specialDay = sDay; update()"><md-icon title="{{'EDIT' | translate}}">edit</md-icon></a>
+        <a class="cursor-pointer" (click)="delete(sDay)"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+        <a (click)="cancelEditing(index)" class="cursor-pointer"><md-icon title="{{'CANCEL' | translate}}">restore</md-icon></a>
+      </td>
+      <td *ngIf="!(sDay.id)">
+       <button color="accent" md-icon-button [disabled]="isLoading" type="button" (click)="create()">
+         <md-icon title="{{'CREATE' | translate}}">check_circle</md-icon></button>
+       <a (click)="cancelEditing(index)" class="cursor-pointer"><md-icon title="{{'CANCEL' | translate}}">delete</md-icon></a>
+      </td>
+     </tr>
+    </tbody>
+  </table>
+
+   <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+
+  </md-card-content>
+ </md-card>
+</div>

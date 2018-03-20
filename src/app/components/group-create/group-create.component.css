@@ -1,0 +1,16 @@
+select { padding:2px; border:1px solid #aaa; }
+textarea
+{
+  height:35px;
+  resize:vertical;
+  position: relative;
+  bottom:7px;
+  padding-top:0;
+  padding-bottom:0;
+  padding-right:0;
+  border-color: #aaa;
+}
+select, textarea, md-input { width:160px; }
+[md-raised-button], [md-button] { /* background:#eee; */ width:160px; }
+
+.md-padding-adjusted { width: 390px; max-width:390px; }

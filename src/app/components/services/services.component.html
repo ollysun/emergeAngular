@@ -1,0 +1,54 @@
+<div>
+  <md-card>
+    <md-card-subtitle>
+      <span class="md-headline">{{'CREATE_SERVICE' | translate }}</span>
+    </md-card-subtitle>
+    <md-card-content>
+      <form class="centered-form">
+          <div class="form-group">
+            <label for="productcode">Product Code </label>
+             <md-input #contract.productcode placeholder="{{'PRODUCT_CODE' | translate}}"></md-input>
+          </div>
+          <div class="form-group">
+            <label for="productdescription">PRODUCT_DESCRIPTION </label>
+            <textarea #contract.productdescription placeholder="{{'PRODUCT_DESCRIPTION' | translate}}"></textarea>
+          </div>
+          <br/>
+          <div class="form-group">
+            <label>Tax Type</label>
+            <select #contract.country placeholder="TAX_TYPE_ID">
+              <optgroup [label]="'TAX_TYPE_ID' | translate">
+                <option *ngFor="let type of TaxType" [label]="tax.id" [value]="tax.id">
+                  {{tax.id}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Search Key</label>
+            <md-input #contract.searchkey placeholder="{{'SEARCH_KEY' | translate}}"></md-input>
+          </div>
+        <div class="form-group">
+          <md-input #contract.username placeholder="{{'REALM_ID' | translate}} ID" type="text">
+          </md-input>
+        </div>
+        <div class="form-group">
+          <label>Service Type</label>
+          <select #contract.country placeholder="TAX_TYPE">
+            <optgroup>
+              <option *ngFor="let type of TaxType" [label]="tax.id" [value]="tax.id">
+                {{tax.id}}
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form group">
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </md-card-content>
+    <!-- <md-card-actions class="align right">
+        <button md-button><md-icon>save</md-icon> Save</button>
+   </md-card-actions> -->
+  </md-card>
+</div>

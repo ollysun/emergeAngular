@@ -1,0 +1,38 @@
+<div *ngIf="typeIndex === 0">
+  <div *ngIf="editing" class="{{hasError() ? 'error': ''}}">
+    <md-input #inlineEditControl [min]="min" [max]="max" [minlength]="minlength" [maxlength]="maxlength" [min]="min" (focus)="focus($event)" [required]="required" (blur)="onBlur($event)" [name]="value" [(ngModel)]="value" [type]="type" class="form-control {{classNames}}" [placeholder]="label">
+      <!-- <md-hint align="end"  *ngIf="hasError()">{{'INVALID_ENTRY' | translate}}</md-hint> -->
+    </md-input>
+    <div [md-tooltip]="'INVALID_ENTRY' | translate" *ngIf="hasError()" class="flex small-box"></div>
+  </div>
+  <div *ngIf="!editing">
+    <label class="block bold">{{label}}</label>
+    <div [md-tooltip]="'CLICK_EDIT' | translate" (click)="edit(value)" (focus)="edit(value);" tabindex="0" class="inline-edit {{hasError() ? 'error': ''}}">{{value}}&nbsp;</div>
+  </div>
+</div>
+
+<div *ngIf="typeIndex === 1">
+  <div *ngIf="editing">
+    <md-textarea #inlineTextAreaControl [minlength]="minlength" [maxlength]="maxlength" [min]="min" (focus)="focus($event)" [required]="required" (blur)="onBlur($event)" [name]="value" [(ngModel)]="value" [placeholder]="label" class="form-control {{classNames}}"></md-textarea>
+  </div>
+  <div *ngIf="!editing">
+    <label class="block bold">{{label}}</label>
+    <div class="inline-textarea" [md-tooltip]="'CLICK_EDIT' | translate" (click)="edit(value)" (focus)="edit(value);" tabindex="0" class="inline-edit">{{value}}&nbsp;</div>
+  </div>
+</div>
+
+<div *ngIf="typeIndex === 2">
+  <div *ngIf="editing">
+    <label class="select-label bold display-block">{{label}}</label>
+    <br>
+    <select #inlineSelectControl (focus)="focus($event)" [required]="required" (blur)="onBlur($event)" [name]="value" [(ngModel)]="value">
+     <optgroup [label]="optgroupLabel || label">
+      <option *ngFor="let item of items; let index = index;" [value]="itemIdKey ? item[itemIdKey]: item" [label]="itemLabelKey ? item[itemLabelKey]: item ">{{itemLabelKey ? item[itemLabelKey]: item}}</option>
+     </optgroup>
+    </select>
+  </div>
+  <div *ngIf="!editing">
+    <label class="block bold">{{label}}</label>
+    <div [md-tooltip]="'CLICK_EDIT' | translate" (click)="edit(value)" (focus)="edit(value)" tabindex="0" class="inline-edit">{{getName()}}&nbsp;</div>
+  </div>
+</div>

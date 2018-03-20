@@ -1,0 +1,105 @@
+<app-backoffice-links></app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+   <md-card-subtitle class="md-card-subtitle main-content-title"><h1>{{'MODULATIONS' | translate}}</h1>
+     <a (click)="queueModulation()" class="card-link">
+       <md-icon>add circle</md-icon> {{'CREATE_MODULATION' | translate}}
+     </a>
+   </md-card-subtitle>
+   <md-card-content>
+    <!--<form class="row">
+     <div class="row">
+       <div class="md-padding flex"><md-input #search.id placeholder="{{'ID' | translate}}"></md-input></div>
+       <div class="md-padding flex"><md-input #search.name placeholder="{{'NAME' | translate}}"></md-input></div>
+       <div class="md-padding flex v-top">
+         <label class="select-label display-block">{{'SELECT_END_TIME' | translate}}</label>
+         <select>
+          <optgroup [label]="'END_TIME' | translate">
+          </optgroup>
+         </select>
+       </div>
+       <div class="md-padding flex v-top">
+        <label class="select-label display-block">{{'SELECT_PERIOD' | translate}}</label>
+        <select>
+         <optgroup [label]="'PERIOD' | translate">
+          <option value="off-peak">{{'OFF_PEAK' | translate}}</option>
+          <option value="peak">{{'PEAK' | translate}}</option>
+         </optgroup>
+        </select>
+       </div>
+       <div class="md-padding flex v-top">
+        <label class="select-label display-block">{{'SELECT_PROFILE' | translate}}</label>
+        <select>
+         <optgroup [label]="'PROFILE' | translate">
+          <option value="default">{{'DEFAULT' | translate}}</option>
+         </optgroup>
+        </select>
+       </div>
+       <div class="md-padding flex"><md-input style="visibility:hidden;"></md-input></div>
+       <div class="md-padding flex"><md-input style="visibility:hidden;"></md-input></div>
+       <button md-button (click)="searchActive=true"><span>{{'SEARCH' | translate}}</span></button>
+     </div>
+
+
+    </form>
+    <hr />-->
+    <!--<div *ngIf="searchActive">-->
+     <div class="clear" style="margin-top:-5px; margin-bottom:0px;">&nbsp;</div>
+     <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+     <div *ngIf="!searching && !modulations.length">{{'NO_SEARCH_RESULTS' | translate}}</div>
+     <div *ngIf="modulations.length" class="align right export-link">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a> </div>
+     <table class="search-results" *ngIf="modulations.length">
+      <thead>
+       <tr>
+        <th>{{'ID' | translate}}</th>
+        <th>{{'TARIFF_VERSION' | translate}}</th>
+        <th>{{'NAME' | translate}}</th>
+        <th>{{'PERIOD' | translate}}</th>
+        <th>{{'END_TIME' | translate}} Name</th>
+        <th>{{'PROFILE' | translate}}</th>
+        <th>{{'DAYS' | translate}}</th>
+        <th>{{'ACTIONS' | translate}}</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr *ngFor="let modulation of modulations; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+        <td>{{modulation.id}}</td>
+        <td>
+          <inline-edit [(ngModel)]="modulation.tariffVersionId" itemLabelKey="description" itemIdKey="id" [items]="tariffVersions" type="select" name="tariffVersionId" classNames="textfield inline-block" title="Click to edit" [optgroupLabel]="'TARIFF_VERSION' | translate"></inline-edit>
+        </td>
+        <td>
+          <inline-edit [(ngModel)]="modulation.name" name="modulationName" classNames="textfield inline-block" title="Click to edit">{{modulation.name}}</inline-edit>
+        </td>
+        <td>
+          <inline-edit [(ngModel)]="modulation.modulationTypeId" itemLabelKey="name" itemIdKey="id" [items]="modulationTypes" type="select" name="modulationTypeId" classNames="textfield inline-block" title="Click to edit" [optgroupLabel]="'PERIOD' | translate"></inline-edit>
+        </td>
+        <td>
+          <inline-edit [(ngModel)]="modulation.endTime" type="select" [items]="endTimes" name="modulationEndTime" classNames="textfield inline-block" title="Click to edit">{{modulation.endTime}}</inline-edit>
+        </td>
+        <td>
+          <inline-edit [items]="profiles" [optgroupLabel]="'PROFILE' | translate" itemIdKey="id" itemLabelKey="name" label="" [(ngModel)]="modulation.profileId" name="modulationProfileId" type="select" classNames="textfield inline-block" title="Click to edit"></inline-edit>
+        </td>
+        <td><rl-tag-input [addOnBlur]="true" [autocomplete]="true" [autocompleteItems]="days" [(ngModel)]="parsedDays[index]" name="days" style="z-index: 1000;font-size: 10px !important;"></rl-tag-input></td>
+        <td>
+          <a (click)="save(index)" class="cursor-pointer">
+            <md-icon *ngIf="modulation.id" title="{{'SAVE' | translate}}">save</md-icon>
+            <button *ngIf="!(modulation.id)" color="accent" md-icon-button [disabled]="isLoading" type="button" (click)="create()">
+             <md-icon title="{{'CREATE' | translate}}">check_circle</md-icon>
+            </button>
+          </a>
+          <a *ngIf="modulation.id" (click)="delete(modulation)" class="cursor-pointer"><md-icon title="{{'DELETE' | translate}}">delete</md-icon></a>
+          <a (click)="cancel(index)" class="cursor-pointer">
+            <md-icon title="{{'CANCEL' | translate}}">restore</md-icon>
+          </a>
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    <!--</div>-->
+    <div class="clear"></div>
+    <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+
+   </md-card-content>
+ </md-card>
+</div>

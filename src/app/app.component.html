@@ -1,0 +1,57 @@
+<md-sidenav-layout>
+  <md-sidenav #sidenav mode="push" class="app-sidenav">
+    <div *ngFor="let menuItem of menu">
+      <a [routerLink]="menuItem.link">
+        <button (click)="sidenav.close()" class="menu-button" md-button>
+          {{menuItem.name}}
+        </button>
+      </a>
+    </div>
+  </md-sidenav>
+
+  <md-toolbar color="primary" id="home-toolbar">
+    <md-toolbar-row class="full-container white-bg md-padding em-topbar">
+      <button class="app-icon-button show-sm-xs" (click)="sidenav.toggle()">
+        <i class="material-icons app-toolbar-menu">menu</i>
+      </button>
+      <a routerLink="/">
+        <div class="flex md-padding">Emerge</div>
+      </a>
+      <span class="app-toolbar-filler"></span>
+      <a *ngIf="currentUser && currentUser.role === 'bo-admin'" routerLink="/backoffice/customers">
+        <button md-button>
+        {{ 'CUSTOMERS' | translate }}
+        </button>
+      </a>
+      <a *ngIf="!currentUser" routerLink="/login">
+        <button md-button>
+        <md-icon>power_settings_new</md-icon> {{ 'LOGIN' | translate }}
+        </button>
+      </a>
+      <span class="em-header-text" *ngIf="currentUser">
+        <md-icon>account_circle</md-icon> {{this.currentUser.name}}
+        <a (click)="logout()">
+          <md-icon title="{{ 'LOGOUT' | translate }}">power_settings_new</md-icon>
+        </a>
+      </span>
+      <!-- <div class="hide-sm-xs hide-m">
+        <span *ngFor="let menuItem of menu">
+          <a *ngIf='!hasSubmenu(menuItem)'[routerLink]="menuItem.link">
+            <button  (click)="sidenav.close()" class="main-menu" md-button>
+              {{menuItem.name}}
+            </button>
+          </a>
+        </span>
+      </div> -->
+    </md-toolbar-row>
+  </md-toolbar>
+  <div class="full-container">
+    <div class="app-content">
+      <router-outlet>
+
+      </router-outlet>
+    </div>
+  </div>
+  <app-footer>
+  </app-footer>
+</md-sidenav-layout>

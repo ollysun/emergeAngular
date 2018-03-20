@@ -1,0 +1,84 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="main-content-body">
+  <div class="flex v-top md-padding">
+    <md-card>
+      <md-card-subtitle>
+        <span class="md-headline">{{'SEARCH' | translate}} {{'SERVICE' | translate}}</span>
+      </md-card-subtitle>
+      <md-card-content>
+        <form>
+          <div class="md-padding flex">
+            <div>
+              <md-input #service.productcode [placeholder]="'PRODUCT_CODE' | translate"></md-input>
+            </div>
+          </div>
+          <div class="md-padding flex">
+            <div>
+              <md-input #service.productdescription [placeholder]="'PRODUCT_DESCRIPTION' | translate"></md-input>
+            </div>
+          </div>
+        </form>
+      </md-card-content>
+      <md-card-actions class="align right">
+        <button md-button>
+            <md-icon>search</md-icon>
+            <span>&nbsp;</span>
+            <span>{{'SEARCH' | translate}}</span>
+        </button>
+      </md-card-actions>
+    </md-card>
+  </div>
+  <div class="flex v-top md-padding viewcontent">
+    <md-card>
+      <md-card-content>
+        <p>
+          <a [routerLink]="['/backoffice/service/postpaid']">
+            <button md-raised-button>{{'VIEW_POSTPAID_SERVICES' | translate }}</button>
+          </a>
+        </p>
+        <p>
+          <a routerLink="/backoffice/service/prepaid">
+            <button md-raised-button>{{'VIEW_PREPAID_SERVICES' | translate}}</button>
+          </a>
+          <p>
+      </md-card-content>
+    </md-card>
+  </div>
+  <!-- <div class="clear">&nbsp;</div> -->
+  <div class="md-padding">
+    <md-card>
+      <md-card-content>
+        <div *ngIf="serviceTypes.length <= 0">
+          {{'NO_RESULTS' | translate}}
+        </div>
+        <table *ngIf="serviceTypes.length > 0" class="search-results" border="1">
+          <thead>
+            <th>{{'PRODUCT_CODE' | translate}}</th>
+            <th>{{'PRODUCT_DESCRIPTION' | translate}}</th>
+            <th>{{'TAX_TYPE' | translate}}</th>
+            <th>{{'SEARCH_KEY' | translate}}</th>
+            <th>{{'SERVICE_TYPE' | translate}}</th>
+            <th>{{'ACTIONS' | translate }}</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of serviceTypes; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+              <td>{{data.product_code}}</td>
+              <td>{{data.product_description}}</td>
+              <td>{{data.tax_type}}</td>
+              <td>{{data.search_key}}</td>
+              <td>{{data.service_key}}</td>
+              <td><a>{{'EDIT' | translate}}</a>&nbsp;|&nbsp;<a>{{'DELETE' | translate}}</a></td>
+            </tr>
+          </tbody>
+          <!-- <div class="app-action">
+            <a routerLink="/backoffice/service/services/create">
+              <button md-fab><md-icon>add circle</md-icon></button>
+            </a>
+          </div> -->
+        </table>
+      </md-card-content>
+    </md-card>
+
+  </div>
+</div>

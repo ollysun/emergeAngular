@@ -1,0 +1,22 @@
+rl-tag-input {
+  max-width: 160px;
+  position: relative;
+  /*top:20px;*/
+}
+
+md-textarea {
+  width: 95%;
+  height: 40px;
+}
+
+select {
+  position: relative;
+  /*top:22px;*/
+  border: 1px solid #aaa;
+  padding: 2px;
+}
+
+md-card-subtitle h2 {
+  position: relative !important;
+  left: 10px !important;
+}

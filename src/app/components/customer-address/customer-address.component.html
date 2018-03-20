@@ -1,0 +1,9 @@
+<div class="md-padding flex v-top">
+ <md-card-subtitle class="md-card-subtitle"><h2 class="md-headline">{{'BILLING_ADDRESSES' | translate}}</h2></md-card-subtitle>
+ <div class="md-padding flex"><md-input [(ngModel)]="address.addressName" name="address.addressName" placeholder="Fiscal {{'ADDRESS_NAME' | translate}}"></md-input></div>
+ <div class="md-padding flex"><md-input [(ngModel)]="address.faxNumber" name="address.faxNumber" placeholder="{{'FAX_NUMBER' | translate}}"></md-input></div>
+ <div class="md-padding flex"><md-input [(ngModel)]="address.telephoneNumber" name="address.telephoneNumber" placeholder="{{'TELEPHONE_NUMBER' | translate}}">
+ </md-input></div>
+ <div class="md-padding flex"><md-input [(ngModel)]="address.email" name="address.email" placeholder="{{'EMAIL' | translate}}"></md-input></div>
+ <div><textarea [(ngModel)]="address.addresses" name="address.addresses" class="textarea" [placeholder]="'ADDRESS' | translate"></textarea></div>
+</div>

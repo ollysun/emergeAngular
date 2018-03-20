@@ -1,0 +1,155 @@
+<app-backoffice-links></app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <!-- Card Links Begin-->
+      <div class="card-links">
+        <!-- <a (click)="showCreationForm()"><md-icon>add</md-icon> {{'ADD_TARIFF' | translate}}</a> -->
+        <a routerLink="/backoffice/modulations">
+          <md-icon>av_timer</md-icon> {{'MODULATIONS' | translate}}</a>
+        <a routerLink="/backoffice/special-days">
+          <md-icon>card_giftcards</md-icon> {{'SPECIAL_DAYS' | translate}}</a>
+        <a routerLink="/backoffice/groups">
+          <md-icon>group</md-icon> {{'GROUPS' | translate}}</a>
+        <a routerLink="/backoffice/groups">
+          <md-icon>terrain</md-icon> {{'ZONES' | translate}}</a>
+        <a routerLink="/backoffice/groups">
+          <md-icon>group_work</md-icon> {{'PREFIXES' | translate}}</a>
+        <a routerLink="/backoffice/tariff-versions">
+          <md-icon>all_out</md-icon> {{'VERSIONS' | translate}}</a>
+      </div>
+      <!-- Card Links End-->
+      <h1 class="main-content-title">{{'TARIFFS' | translate}}</h1>
+      <a type="button" (click)="showCreationForm()" class="float-right card-link">
+        <md-icon>add</md-icon>{{'ADD_TARIFF' | translate}}</a>
+    </md-card-subtitle>
+    <md-card-content>
+
+      <div class="row" *ngIf="inProgress">
+        <div class="clear">&nbsp;</div>
+        <md-card-subtitle class="md-card-subtitle">
+          <h2 class="main-content-title">{{'CREATE_TARIFF' | translate}}</h2></md-card-subtitle>
+        <form (submit)="create()">
+          <div class="md-padding flex v-middle">
+            <md-input required name="tariffName" [(ngModel)]="tariff.name" placeholder="{{'NAME' | translate}}"></md-input>
+          </div>
+          <div class="md-padding flex v-middle">
+            <md-input required type="number" min="0" name="setupCost" [(ngModel)]="tariff.setupCost" placeholder="{{'SETUP_COST' | translate}}"></md-input>
+          </div>
+          <br />
+          <div class="md-padding flex v-middle">
+            <md-input required type="number" min="0" name="initialCost" [(ngModel)]="tariff.initialCost" placeholder="{{'INITIAL_COST' | translate}}"></md-input>
+          </div>
+          <div class="md-padding flex v-middle">
+            <md-input required type="number" min="0" name="initalDuration" [(ngModel)]="tariff.initialDuration" placeholder="{{'INITIAL_DURATION' | translate}}"></md-input>
+          </div>
+          <div class="md-padding flex v-middle">
+            <md-input required type="number" min="0" name="recurrentCost" [(ngModel)]="tariff.recurrentCost" placeholder="{{'RECURRENT_COST' | translate}}"></md-input>
+          </div>
+          <div class="md-padding flex v-middle">
+            <md-input required type="number" min="0" name="recurrentDuration" [(ngModel)]="tariff.recurrentDuration" placeholder="{{'RECURRENT_DURATION' | translate}}"></md-input>
+          </div>
+          <br />
+          <div class="md-padding flex v-top">
+            <label class="select-label display-block">{{'SELECT_GROUP' | translate}}</label>
+            <select required name="groupId" [(ngModel)]="tariff.groupId">
+        <optgroup [label]="'GROUP' | translate">
+         <!--<option value="{{tariff.groupId}}">{{tariff.groupId}}</option>-->
+         <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
+        </optgroup>
+       </select>
+          </div>
+          <!--<div class="md-padding flex v-top">
+       <label class="select-label display-block">{{'SELECT_ZONE' | translate}}</label>
+       <select required name="zoneId" [(ngModel)]="tariff.zoneId">
+        <optgroup [label]="'ZONE' | translate">
+         <option value="default">Default</option>
+        </optgroup>
+       </select>
+     </div>-->
+          <div class="md-padding flex v-top">
+            <label class="select-label display-block">{{'SELECT_PROFILE' | translate}}</label>
+            <select required name="profileId" [(ngModel)]="tariff.profileId">
+        <optgroup [label]="'PROFILE' | translate">
+         <!--<option value="{{tariff.profileId}}">{{tariff.profileId}}</option>-->
+         <option *ngFor="let profile of profiles" value="{{profile.id}}">{{profile.name}}</option>
+        </optgroup>
+       </select>
+          </div>
+          <div class="md-padding flex v-top">
+            <label class="select-label display-block">{{'SELECT_MODULATION_TYPE' | translate}}</label>
+            <select required name="modulationTypeId" [(ngModel)]="tariff.modulationTypeId">
+        <optgroup [label]="'MODULATION_TYPE' | translate">
+         <!--<option *ngFor="let modulation of modulations" value="{{modulation.id}}">{{modulation.name}}</option>-->
+         <option *ngFor="let modulationType of modulationTypes" value="{{modulationType.id}}">{{modulationType.name}}</option>
+        </optgroup>
+       </select>
+          </div>
+          <!--<br />-->
+          <div class="clear"></div>
+          <!-- <div class="md-padding flex"><button type="button" (click)="cancel()" md-button>{{'CANCEL' | translate}}</button></div> -->
+          <div class="md-padding flex align right tariff-create-button float-right">
+            <button type="button" (click)="cancel()" md-button>{{'CANCEL' | translate}}</button>
+            <button *ngIf="tariff.id" type="button" (click)="update()" class="em-primary-btn" md-button>{{'UPDATE' | translate}}</button>
+            <button *ngIf="!(tariff.id)" class="em-primary-btn" md-raised-button>{{'CREATE' | translate}}</button>
+          </div>
+        </form>
+        <div class="clear"></div>
+        <hr>
+      </div>
+
+      <md-spinner class="em-spinner" color="accent" *ngIf="isLoading"></md-spinner>
+      <div class="no-results" *ngIf="tariffs.length <= 0 && !isLoading">{{'NO_SEARCH_RESULTS' | translate}}</div>
+      <div *ngIf="tariffs.length > 0">
+        <!-- <div class="align right export-link">Export: <a href="#" title="Export as CSV">CSV</a> | <a href="#" title="Export as PDF">PDF</a> </div> -->
+        <table class="search-results">
+          <thead>
+            <tr>
+              <th>{{'ID' | translate}}</th>
+              <th>{{'TARIFF_VERSION' | translate}}</th>
+              <th>{{'NAME' | translate}}</th>
+              <th>{{'GROUP_ID' | translate}}</th>
+              <th>{{'ZONE_ID' | translate}}</th>
+              <th>{{'PROFILE_ID' | translate}}</th>
+              <th>{{'MODULATION_TYPE_ID' | translate}}</th>
+              <th>{{'SETUP_COST' | translate}}</th>
+              <th>{{'INITIAL_COST' | translate}}</th>
+              <th>{{'INITIAL_DURATION' | translate}}</th>
+              <th>{{'RECURRENT_COST' | translate}}</th>
+              <th>{{'RECURRENT_DURATION' | translate}}</th>
+              <th>{{'STATUS' | translate}}</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of tariffs; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+              <td>{{t.id}}</td>
+              <td>{{t.tariffVersionId}}</td>
+              <td>{{t.name}}</td>
+              <td>{{t.groupId}}</td>
+              <td>{{t.zoneId}}</td>
+              <td>{{t.profileId}}</td>
+              <td>{{t.modulationTypeId}}</td>
+              <td>{{t.setupCost}}</td>
+              <td>{{t.initialCost}}</td>
+              <td>{{t.initialDuration}}</td>
+              <td>{{t.recurrentCost}}</td>
+              <td>{{t.recurrentDuration}}</td>
+              <td>{{t.status}}</td>
+              <td>
+                <a class="cursor-pointer" (click)="delete(t)">
+                  <md-icon title="{{'DELETE' | translate}}">delete</md-icon>
+                </a>
+                <a class="cursor-pointer" (click)="showCreationForm(t);">
+                  <md-icon title="{{'EDIT' | translate}}">edit</md-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+    </md-card-content>
+  </md-card>
+</div>

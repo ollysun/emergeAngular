@@ -1,0 +1,10 @@
+input[type="file"]{
+  /*display: none;*/
+}
+label[for="file-input"]{
+  padding: 15px;
+  float: left;
+  border: 1px dashed #A8B9CE;
+  border-radius: 10px;
+  margin-top: 10px;
+}

@@ -1,0 +1,116 @@
+<app-backoffice-links>
+</app-backoffice-links>
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle">
+      <h1 class="main-content-title">{{'CREATE_TARIFF' | translate}}</h1></md-card-subtitle>
+    <md-card-content>
+      <!--<form class="row">-->
+      <div class="row">
+
+        <div class="md-padding flex v-top md-padding-adjusted">
+          <md-card-subtitle class="md-card-subtitle">
+            <h2 class="md-headline">{{'CREATE_GROUP' | translate}}</h2>
+          </md-card-subtitle>
+          <form (submit)="createGroup()">
+            <div class="md-padding flex">
+              <md-input name="group.name" [(ngModel)]="group.name" placeholder="{{'GROUP_NAME' | translate}}" required></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-textarea name="group.description" [(ngModel)]="group.description" placeholder="{{'DESCRIPTION' | translate}}" required></md-textarea>
+            </div>
+            <!--<div class="md-padding flex v-middle"><md-checkbox label="'NATION' | translate" placeholder="'NATION' | translate">{{'NATION' | translate}}</md-checkbox></div>-->
+            <br />
+            <div class="md-padding flex">
+              <md-input style="visibility:hidden;"></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input style="visibility:hidden;"></md-input>
+            </div>
+            <br />
+            <div class="md-padding flex"><button (click)="resetGroup()" md-button type="button">{{'CANCEL' | translate}}</button></div>
+            <div class="md-padding flex"><button md-button class="em-primary-btn">{{'CREATE' | translate}}</button></div>
+          </form>
+        </div>
+
+        <div class="md-padding flex v-top md-padding-adjusted">
+          <md-card-subtitle class="md-card-subtitle">
+            <h2 class="md-headline">{{'CREATE_ZONE' | translate}}</h2>
+          </md-card-subtitle>
+          <form (submit)="createZone()">
+            <div class="md-padding flex v-bottom">
+              <md-input name="zoneName" [(ngModel)]="zone.name" placeholder="{{'ZONE_NAME' | translate}}" required></md-input>
+            </div>
+            <div class="md-padding flex v-bottom">
+              <md-textarea name="zone.description" [(ngModel)]="zone.description" placeholder="{{'ZONE_DESCRIPTION' | translate}}" required></md-textarea>
+            </div>
+            <br />
+            <div class="md-padding flex v-bottom">
+              <md-input style="visibility:hidden;"></md-input>
+            </div>
+            <div class="md-padding flex v-top">
+              <label class="select-label display-block">{{'SELECT_GROUP' | translate}}</label>
+              <select name="zoneGroup" [(ngModel)]="zone.groupId" required>
+             <optgroup [label]="'GROUP' | translate">
+               <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
+             </optgroup>
+           </select>
+            </div>
+            <br />
+            <div class="md-padding flex"><button (click)="resetZone()" md-button type="button">{{'CANCEL' | translate}}</button></div>
+            <div class="md-padding flex"><button md-button class="em-primary-btn">{{'CREATE' | translate}}</button></div>
+          </form>
+        </div>
+
+        <div class="md-padding flex v-top">
+          <md-card-subtitle class="md-card-subtitle">
+            <h2 class="md-headline">{{'CREATE_PREFIX' | translate}}</h2>
+          </md-card-subtitle>
+          <form (submit)="createPrefix()">
+            <div class="md-padding flex v-top">
+              <label class="select-label display-block">{{'SELECT_COUNTRY' | translate}}</label>
+              <select name="prefixCountry" [(ngModel)]="prefix.country" required>
+             <optgroup [label]="'COUNTRY' | translate">
+               <option *ngFor="let country of countries" [label]="country.name" [value]="country.name">{{country.name}}</option>
+             </optgroup>
+           </select>
+            </div>
+            <!--
+         <div class="md-padding flex v-top">
+           <label class="select-label display-block">{{'SELECT_ZONE' | translate}}</label>
+           <select name="prefixZone" [(ngModel)]="prefix.zoneId">
+             <optgroup [label]="'ZONE' | translate">
+               <option *ngFor="let country of countries" [label]="country.name" [value]="country.name">{{country.name}}</option>
+             </optgroup>
+           </select>
+         </div>-->
+            <div class="md-padding flex v-top">
+              <md-textarea name="prefixDescription" [(ngModel)]="prefix.description" placeholder="{{'DESCRIPTION' | translate}}" style="bottom:0;" required></md-textarea>
+            </div>
+            <div class="md-padding flex v-top position-relative" style="bottom:2px;">
+              <md-input name="prefixPrefix" [(ngModel)]="prefix.value" placeholder="{{'VALUE' | translate}}" required></md-input>
+            </div>
+            <br />
+            <div class="md-padding flex">
+              <md-input style="visibility:hidden;"></md-input>
+            </div>
+            <!--<div class="md-padding flex"><md-input style="visibility:hidden;"></md-input></div>-->
+            <div class="md-padding flex position-relative">
+              <button (click)="resetPrefix()" md-button type="button">{{'CANCEL' | translate}}</button>
+            </div>
+            <div class="md-padding flex position-relative" style="left:15px;">
+              <button md-button class="em-primary-btn">{{'CREATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <!--</form>-->
+
+    </md-card-content>
+  </md-card>
+</div>

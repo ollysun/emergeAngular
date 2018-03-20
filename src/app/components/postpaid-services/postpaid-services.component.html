@@ -1,0 +1,65 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="float-left  main-content-body">
+    <md-card>
+      <md-card-subtitle>
+        <span class="md-headline">{{'SEARCH_POSTPAID_SERVICE' | translate}}</span>
+      </md-card-subtitle>
+      <md-card-content>
+        <form class="row">
+              <div class="md-padding flex">
+                <md-input name="postpaid.product_code" [(ngModel)]="postpaid.product_code" placeholder="{{'PRODUCT_CODE' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input  name="postpaid.product_description" [(ngModel)]="postpaid.product_description" placeholder="{{'PRODUCT_DESCRIPTION' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input  name="postpaid.name" [(ngModel)]="postpaid.name" placeholder="{{'NAME' | translate }}"></md-input>
+              </div>
+        </form>
+      </md-card-content>
+      <md-card-actions class="align right">
+          <button md-button>
+            <md-icon>search</md-icon>
+            <span>&nbsp;</span>
+            <span>{{'SEARCH' | translate}}</span>
+        </button>
+     </md-card-actions>
+    </md-card>
+    <div>
+    <md-card>
+      <md-card-content>
+        <div *ngIf="searchData.length <= 0">
+         Sorry! No results were found for your search. Please define your search and try again.
+        </div>
+        <table style='width:100%' *ngIf="searchData.length > 0"   class="search-results" border="1">
+            <thead>
+                <th>{{'NAME' | translate}}</th>
+                <th>{{'PRODUCT_CODE' | translate}}</th>
+                <th>{{'PRODUCT_DESCRIPTION' | translate}}</th>
+                <th>{{'UNIT_PRICE' | translate}}</th>
+                <th>{{'ACTIONS' | translate }}</th>
+            </thead>
+          <tbody>
+            <tr *ngFor="let data of searchData; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+                  <td>{{data.name}}</td>
+                  <td>{{data.product_code}}</td>
+                  <td>{{data.product_description}}</td>
+                  <td>{{data.unit_price}}</td>
+                  <td>
+                    <a [routerLink]="['/backoffice/service/postpaid/view', data.id]">
+                      {{'View' |translate}}
+                    </a>
+                   </td>
+              </tr>
+          </tbody>
+        </table>
+      </md-card-content>
+    </md-card>
+    </div>
+    <div class="app-action">
+    <a routerLink="/backoffice/service/postpaid/create">
+      <button md-fab><md-icon>add circle</md-icon></button>
+    </a>
+    </div>
+</div>

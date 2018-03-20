@@ -1,0 +1,22 @@
+<md-card>
+  <md-card-subtitle>
+    <h2 class="main-content-subtitle">{{'LOGIN_TO_BACKOFFICE' | translate}}</h2>
+  </md-card-subtitle>
+  <md-card-content class="text-center">
+    <form (submit)="login()">
+      <div class="md-padding">
+        <md-input [(ngModel)]="login.username" name="login.username" [placeholder]="'USERNAME' | translate" type="email" class="full-width autofocus"></md-input>
+      </div>
+      <div class="md-padding">
+        <md-input [(ngModel)]="login.password" name="login.password" [placeholder]="'PASSWORD' | translate" type="password" class="full-width"></md-input>
+      </div>
+      <div class="md-padding md-margin">
+        <a>{{'FORGOT_PASSWORD' | translate}}?</a>
+      </div>
+      <div>
+        <button color="accent" class="full-width login-button" md-raised-button [disabled]="!login.username">{{'LOGIN' | translate}}</button>
+      </div>
+    </form>
+    <div class="telo-bg-img"></div>
+  </md-card-content>
+</md-card>

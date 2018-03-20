@@ -1,0 +1,43 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="float-left main-content-body">
+  <md-card class="medium-width-containe">
+    <md-card-subtitle class="md-card-subtitle"><h1 class="main-content-title"><span class="md-headline">{{'CREATE_POSTPAID_SERVICE' | translate }}</span></h1></md-card-subtitle>
+    <md-card-content>
+      <span *ngIf="successMessage" class="alert alert-success">{{successMessage}}</span>
+      <form class="row" #f="ngForm" (ngSubmit)="create()">
+        <div class="row">
+          <div class="md-padding flex v-top">
+            <md-card-subtitle class="md-card-subtitle"><h2 class="md-headline">{{'POSTPAID_DETAILS' | translate}}</h2></md-card-subtitle>
+              <div class="md-padding flex"><md-input  name="postpaid.unitPrice" [(ngModel)]="postpaid.unitPrice" placeholder="{{'UNIT_PRICE' | translate }}"></md-input></div><br/>
+          </div>
+          <div class="md-padding flex v-top">
+              <md-card-subtitle class="md-card-subtitle">
+                <h2 class="md-headline">{{'PRODUCT_DETAILS' | translate}}</h2>
+              </md-card-subtitle>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.id" [(ngModel)]="postpaid.product.id" placeholder="{{'PRODUCT_ID' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.code" [(ngModel)]="postpaid.product.code" placeholder="{{'PRODUCT_CODE' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.description" [(ngModel)]="postpaid.product.description" placeholder="{{'PRODUCT_DESCRIPTION' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.tax_id" [(ngModel)]="postpaid.product.tax_id" placeholder="{{'TAX_ID' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.tax_description" [(ngModel)]="postpaid.product.tax_description" placeholder="{{'TAX_DESCRIPTION' | translate }}"></md-input>
+              </div>
+              <div class="md-padding flex">
+                <md-input name="postpaid.product.taxpercentage" [(ngModel)]="postpaid.product.taxpercentage" placeholder="{{'TAX_PERCENTAGE' | translate }}"></md-input>
+              </div>
+              <br/>
+          </div>
+          <md-card-actions class="align right"><button md-button class="btn btn-primary">Save</button></md-card-actions>
+      </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

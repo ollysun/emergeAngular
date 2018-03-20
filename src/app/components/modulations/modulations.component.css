@@ -1,0 +1,10 @@
+button[md-button] {
+  position: relative;
+  left: 75px;
+}
+
+rl-tag-input *, rl-tag-input-item *{
+  font-size: 10px !important;
+}
+
+rl-tag-input rl-tag-input-item[ng-reflect-index]{font-size:10px !important; }

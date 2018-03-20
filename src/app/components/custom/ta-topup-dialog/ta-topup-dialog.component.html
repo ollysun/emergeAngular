@@ -1,0 +1,22 @@
+<div>
+  <content class="md-padding">
+    <span *ngIf="!message">{{'TOP_UP_TELO_AGENT' | translate}}</span>
+  </content>
+
+  <div class="dialog-actions">
+    <div class="md-padding flex">
+      <md-input name="reasonForTopUp" [(ngModel)]="topUp.reasonForTopUp" [placeholder]="'REASON_FOR_TOP_UP' | translate"></md-input>
+    </div>
+    <div class="md-padding flex">
+      <md-input name="topUpValue" [(ngModel)]="topUp.topUpValue" [placeholder]="'TOP_UP_VALUE' | translate" min="0" type="number"></md-input>
+    </div>
+    <br>
+    <div class="md-padding flex">
+      <button md-button type="button" (click)="dialogRef.close(false)">{{'CANCEL' | translate}}</button>
+    </div>
+    <div class="md-padding flex">
+      <button md-raised-button type="button" color="accent" (click)="dialogRef.close(topUp)">{{'OK' | translate}}</button>
+    </div>
+  </div>
+
+</div>

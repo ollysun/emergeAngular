@@ -1,0 +1,30 @@
+inline-edit { display:inline-block; width:160px; }
+select { border-color:#999; }
+md-radio-button { position:relative; top:0px; margin-left:5px; }
+label, md-slide-toggle, .md-slide-toggle-content { font-weight: bold; }
+
+.md-padding, .flex { padding-right:0; }
+.config-holder div { margin-right:20px; }
+.password-field {  width:119px; }
+.password-generate-button {
+  line-height:25px;
+  font-size:12px;
+  min-width:40px;
+  margin-left:2px;
+}
+.remove-credit-button {
+    min-width: 20px;
+    padding: 2px;
+    line-height: 20px;
+    color: #a22;
+    font-weight: bold;
+    position:relative;
+    top:3px;
+    margin-left:0;
+}
+
+.device-data-holder .md-padding{
+  border:none; /*1px solid #aaa;*/
+  width:170px;
+  margin-bottom:15px;
+}

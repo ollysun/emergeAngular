@@ -1,0 +1,83 @@
+<app-backoffice-links></app-backoffice-links>
+
+
+<div class="main-content-body">
+  <md-card>
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'CUSTOMER_INFORMATION' | translate}}</h1>
+
+    </md-card-subtitle>
+    <md-card-content>
+      <div>
+        <form class="row" (submit)="create()">
+          <div class="sub-form">
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.serviceType" ng2-auto-complete [source]="prepaidData" [(ngModel)]="service" [placeholder]="'SELECT_SERVICE_TYPE' | translate" value-property-name="servicePrepaidId" display-property-name="serviceType" required>
+              </md-input>
+            </div>
+
+            <md-spinner class="em-spinner small flex" color="accent" *ngIf="isLoading"></md-spinner>
+          </div>
+          <div class="sub-form">
+            <md-slide-toggle [(ngModel)]="prepaidContract.automaticRenewal" name="prepaidContract.automaticRenewal">
+              {{'AUTOMATIC_RENEWAL' | translate}}</md-slide-toggle>
+          </div>
+          <div class="md-padding">
+            <label class="block">{{'CONTENT' | translate}}</label>
+            <br>
+            <rich-text-field class="full-width height-400" elementId="rich-editor" (onEditorKeyup)="keyupHandlerFunction($event)">
+            </rich-text-field>
+          </div>
+          <br>
+          <div class="align right">
+            <button md-button type="button" (click)="clear()">{{'CLEAR' | translate}}</button>
+            <button md-button class="em-primary-btn" [disabled]="isLoading || !service.serviceType || !service" type="submit">
+              <md-spinner class="em-spinner x-small in-button" color="accent" *ngIf="isLoading"></md-spinner>
+              {{'SAVE' | translate}}</button>
+          </div>
+        </form>
+        <br>
+        <div class="no-results" *ngIf="prepaidContracts.length == 0">{{'NO_CONTRACT_RESULTS' | translate}}</div>
+        <div *ngIf="prepaidContracts.length > 0">
+          <table class="search-results">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>{{'STATUS_DATE' | translate}}</th>
+                <th>{{'START_DATE' | translate}}</th>
+                <th>{{'AUTOMATIC_RENEWAL' | translate}}</th>
+                <th>{{'SERVICE_TYPE' | translate}}</th>
+                <th>{{'STATUS' | translate}}</th>
+                <th>{{'SERVICE_PREPAID' | translate}}</th>
+                <th>{{'ACTIONS' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of prepaidContracts; let index=index; let odd=odd; let even=even;" class="row" [ngClass]="{ odd: odd, even: even }">
+                <td>{{data.contractId}}</td>
+                <td>{{data.statusDate}}</td>
+                <td>{{data.startDate}}</td>
+                <td><span class='em-status-text'>{{(data.automaticRenewal ? 'YES' : 'NO') | translate}}</span></td>
+                <td>{{data.serviceType}}</td>
+                <td><span class='em-status-text'>{{data.status | translate}}</span></td>
+                <td><a routerLink="/backoffice/customers/{{data.customerId}}/prepaid-services/{{data.servicePrepaid}}">{{data.servicePrepaid}}</a></td>
+                <td>
+                  <a *ngIf="data.status === 'ACTIVE'" (click)="cancel(data, index)" [md-tooltip]="'CANCEL' | translate">
+                    <md-icon>close</md-icon>
+                  </a>
+                  <a routerLink="/backoffice/customers/{{data.customerId}}/prepaid-contracts/{{data.contractId}}">
+                    <md-icon>remove_red_eye</md-icon>
+                  </a>
+                  <a *ngIf="data.status === 'NEW'" (click)="confirm(data)" [md-tooltip]="'CONFIRM_CONTRACT' | translate">
+                    <button type="button" color="accent" md-icon-button><md-icon>check</md-icon></button>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+    </md-card-content>
+  </md-card>
+</div>

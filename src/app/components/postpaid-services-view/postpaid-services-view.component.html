@@ -1,0 +1,30 @@
+<app-backoffice-links>
+</app-backoffice-links>
+<div class="float-left main-content-body">
+  <md-card-subtitle class="md-card-subtitle"><h1 class="main-content-title"><span class="md-headline">{{'VIEW_AND_EDIT_POSTPAID' | translate }}</span></h1></md-card-subtitle>
+  <div class="md-padding v-top text-center">
+        <div class="md-padding flex">
+          <label class="customer-data-label">ID</label>
+          <span class="textfield inline-block">{{postpaidService.id}}</span>
+        </div>
+        <div class="md-padding flex">
+          <inline-edit [label]="'PRODUCT_NAME' | translate" [(ngModel)]="postpaidService.name" name="postpaid.name" classNames="textfield inline-block" title="Click to edit">{{postpaidService.name}}</inline-edit>
+        </div>
+        <br />
+        <div class="md-padding flex">
+          <inline-edit [label]="'UNIT_PRICE' | translate" [(ngModel)]="postpaidService.unit_price" name="postpaidService.unit_price" classNames="textfield inline-block" title="Click to edit">{{postpaidService.unit_price}}</inline-edit>
+        </div>
+        <div class="md-padding flex">
+          <inline-edit [label]="'PRODUCT_CODE' | translate" [(ngModel)]="postpaidService.product_code" name="postpaidService.product_code" classNames="textfield inline-block" title="Click to edit">{{postpaidService.product_code}}</inline-edit>
+        </div>
+        <br />
+        <div class="md-padding flex">
+          <inline-edit [label]="'PRODUCT_DESCRIPTION' | translate" [(ngModel)]="postpaidService.product_description" name="postpaidService.product_description" classNames="textfield inline-block" title="Click to edit">{{postpaidService.product_description}}</inline-edit>
+        </div>
+        <div class="md-padding flex">
+          <inline-edit [label]="'TAX_TYPE' | translate" [(ngModel)]="postpaidService.taxtypes" name="postpaidService.taxtypes" classNames="textfield inline-block" title="Click to edit">{{postpaidService.taxtypes}}</inline-edit>
+        </div>
+
+</div>
+
+</div>

@@ -1,0 +1,58 @@
+<app-backoffice-links></app-backoffice-links>
+
+<div class="main-content-body">
+  <app-page-not-found *ngIf="!prepaidContract"></app-page-not-found>
+  <md-card *ngIf="prepaidContract">
+    <md-card-subtitle class="md-card-subtitle main-content-title">
+      <h1>{{'VIEW_PREPAID_CONTRACT' | translate}}
+        #{{prepaidContract.contractId}}</h1>
+      <div *ngIf="prepaidContract.status === 'ACTIVE'">
+        <a routerLink="/backoffice/customers/{{prepaidContract.customerId}}/prepaid-contracts/{{prepaidContract.contractId}}/services/{{prepaidContract.servicePrepaid}}/create-supplement" class="float-right card-link">
+          <md-icon>add</md-icon>
+          {{'CREATE_SUPPLEMENT_CONTRACT' | translate}}
+        </a>
+      </div>
+    </md-card-subtitle>
+    <md-card-content>
+      <div class="sub-form full-width">
+        <form class="row">
+          <div class="sub-form">
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.serviceType" [(ngModel)]="prepaidContract.serviceType" [placeholder]="'SERVICE_TYPE' | translate" disabled></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.status" [(ngModel)]="prepaidContract.status" [placeholder]="'STATUS' | translate" disabled></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.startDate" [(ngModel)]="prepaidContract.startDate" [placeholder]="'START_DATE' | translate" disabled></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-input name="prepaidContract.statusDate" [(ngModel)]="prepaidContract.statusDate" [placeholder]="'STATUS_DATE' | translate" disabled></md-input>
+            </div>
+            <div class="md-padding flex">
+              <md-slide-toggle [(ngModel)]="prepaidContract.automaticRenewal"
+               name="prepaidContract.automaticRenewal">{{'AUTOMATIC_RENEWAL' | translate}}
+              </md-slide-toggle>
+            </div>
+            <div class="md-padding">
+              <label class="bold block">{{'CONTENT' | translate}}</label>
+              <br>
+              <md-card>
+                <iframe #iframe class="full-width height-400 html-frame"></iframe>
+              </md-card>
+            </div>
+          </div>
+          <div class="md-padding button-toolbar em-margin-top large">
+            <div class="flex">
+              <button md-button [disabled]="isLoading" type="button" color="warn" (click)="delete(prepaidContract)" class="align left">{{'DELETE' | translate}}</button>
+            </div>
+            <div class="flex float-right">
+              <button md-button type="button" [disabled]="true">{{'UPDATE' | translate}}</button>
+            </div>
+          </div>
+          <app-confirm-dialog #confirmDialog></app-confirm-dialog>
+        </form>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

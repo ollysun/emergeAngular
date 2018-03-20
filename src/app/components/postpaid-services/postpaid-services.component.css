@@ -1,0 +1,25 @@
+/*.float-right { float:right; width: 50%;}
+.float-left { float:left; width: 50%;}*/
+.clear { clear:both; }
+.text-centered { text-align:center; }
+.position-relative { position:relative;  }
+
+ #align {
+   text-align: center;
+ }
+
+ p{
+    margin-top: 2em;
+    display: block;
+
+ }
+
+ th, td {
+    height: 50px;
+    vertical-align: middle;
+}
+
+body{
+  border-collapse:separate;
+	border-spacing:5px 5px
+}
